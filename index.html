@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Isoloir 2027</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Choisis des idées, pas des noms. Découvre à l'aveugle le programme présidentiel 2027 le plus proche de tes convictions.">
+<meta name="theme-color" content="#14161F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Isoloir">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Public+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout : une colonne d'application (max 560px), en-tête collant, écrans plein cadre.
+   Matière : le bulletin de vote blanc, l'encre noire, l'enveloppe bleu-gris de l'isoloir. */
+:root{
+  --paper:#F6F6F2; --sheet:#FFFFFF; --ink:#14161F; --muted:#5E6170; --line:#DCDDE3;
+  --envelope:#5B67FF; --envelope-soft:#E7E9FF; --yes:#14805A; --yes-soft:#DDF2E8;
+  --no:#C23A2E; --no-soft:#F8E1DE; --shadow:0 1px 0 rgba(20,22,31,.06),0 12px 28px -14px rgba(20,22,31,.28);
+  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0E0F15; --sheet:#181A23; --ink:#EEEEEA; --muted:#9A9DAB; --line:#2A2D3A;
+  --envelope:#8C95FF; --envelope-soft:#23264A; --yes:#3CC48D; --yes-soft:#11291F;
+  --no:#F0786C; --no-soft:#331816; --shadow:0 1px 0 rgba(0,0,0,.4),0 14px 30px -14px rgba(0,0,0,.7); color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0E0F15; --sheet:#181A23; --ink:#EEEEEA; --muted:#9A9DAB; --line:#2A2D3A;
+  --envelope:#8C95FF; --envelope-soft:#23264A; --yes:#3CC48D; --yes-soft:#11291F;
+  --no:#F0786C; --no-soft:#331816; --shadow:0 1px 0 rgba(0,0,0,.4),0 14px 30px -14px rgba(0,0,0,.7); color-scheme:dark }
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+button{font:inherit;color:inherit}
+a{color:var(--envelope)}
+:focus-visible{outline:3px solid var(--envelope);outline-offset:2px;border-radius:6px}
+
+.app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 24px}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:flex;align-items:center;gap:12px;padding-block:12px}
+.brand{font-family:var(--f-display);font-weight:850;font-stretch:72%;font-size:22px;letter-spacing:.01em;text-transform:uppercase;display:flex;align-items:center;gap:8px;background:none;border:0;padding:0;cursor:pointer}
+.brand i{display:inline-block;width:18px;height:22px;border:2.5px solid var(--ink);border-radius:3px;position:relative}
+.brand i::after{content:"";position:absolute;left:3px;right:3px;top:-6px;height:9px;background:var(--envelope);border:2px solid var(--paper)}
+.bar .spacer{flex:1}
+.iconbtn{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
+
+.screen{display:flex;flex-direction:column;gap:20px;flex:1;animation:in .28s ease both}
+@keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.02}
+h1{font-size:clamp(44px,13vw,68px);font-weight:900;font-stretch:68%;text-transform:uppercase;letter-spacing:-.005em}
+h2{font-size:30px;font-weight:850;font-stretch:75%;text-transform:uppercase}
+h3{font-size:19px;font-weight:750;font-stretch:90%}
+p{margin:0}
+.lead{font-size:18px;color:var(--muted);max-width:34ch}
+.small{font-size:13px;color:var(--muted)}
+
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:14px;padding:16px 18px;
+  font-weight:700;font-size:17px;cursor:pointer;background:var(--ink);color:var(--paper);text-decoration:none;transition:transform .12s}
+.btn:active{transform:scale(.98)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.env{background:var(--envelope);color:#fff}
+.btn small{font-weight:500;opacity:.75;font-size:13px}
+.stack{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:10px}
+.row>*{flex:1;min-width:0}
+
+.mode{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;text-align:left;width:100%;padding:18px;border-radius:16px;
+  background:var(--sheet);border:1px solid var(--line);cursor:pointer;box-shadow:var(--shadow)}
+.mode b{font-family:var(--f-display);font-size:20px;font-weight:800;font-stretch:85%}
+.mode span{grid-column:1;color:var(--muted);font-size:14px}
+.mode em{grid-row:1/3;grid-column:2;font-style:normal;font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--envelope-soft);color:var(--envelope);border-radius:999px;padding:6px 10px}
+.mode.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.mode.primary span{color:color-mix(in srgb,var(--paper) 70%,transparent)}
+
+.steps{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:baseline;counter-increment:s;font-size:15px}
+.steps li::before{content:counter(s);font-family:var(--f-display);font-weight:800;font-size:15px;width:24px;height:24px;border-radius:50%;
+  display:grid;place-items:center;border:1.5px solid var(--ink)}
+
+.notice{border-top:1px solid var(--line);padding-top:14px;font-size:13px;color:var(--muted)}
+
+/* Priorités */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:10px 14px;font-size:15px;font-weight:600;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* Carte-bulletin */
+.progress{display:flex;align-items:center;gap:12px}
+.track{flex:1;height:4px;background:var(--line);border-radius:4px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--ink);border-radius:4px;transition:width .25s}
+.count{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--muted);min-width:48px;text-align:right}
+.deck{position:relative;flex:1;min-height:300px;display:grid;touch-action:pan-y}
+.ballot{grid-area:1/1;align-self:stretch;background:var(--sheet);border-radius:6px;box-shadow:var(--shadow);border:1px solid var(--line);
+  padding:26px 22px 22px;display:flex;flex-direction:column;gap:16px;position:relative;user-select:none;-webkit-user-select:none;
+  will-change:transform;transition:transform .25s ease,opacity .25s ease}
+.ballot.under{transform:translateY(10px) scale(.96);opacity:.6;pointer-events:none}
+.ballot .theme{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--envelope)}
+.ballot .q{font-family:var(--f-display);font-weight:780;font-stretch:88%;font-size:clamp(25px,7.2vw,33px);line-height:1.12;text-wrap:balance;flex:1}
+.ballot .ref{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;border-top:1px dashed var(--line);padding-top:12px;font-variant-numeric:tabular-nums}
+.stamp{position:absolute;top:22px;padding:4px 10px;border:3px solid;border-radius:6px;font-family:var(--f-display);font-weight:900;font-stretch:75%;
+  font-size:22px;text-transform:uppercase;opacity:0;transform:rotate(-8deg);pointer-events:none}
+.stamp.yes{right:18px;color:var(--yes);border-color:var(--yes)}
+.stamp.no{left:18px;color:var(--no);border-color:var(--no);transform:rotate(8deg)}
+.weight{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);background:none;border:0;padding:6px 0}
+.weight .box{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line);display:grid;place-items:center}
+.weight[aria-pressed="true"]{color:var(--ink)}
+.weight[aria-pressed="true"] .box{background:var(--envelope);border-color:var(--envelope)}
+.weight[aria-pressed="true"] .box::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
+.vote{display:grid;grid-template-columns:1fr auto 1fr;gap:10px}
+.vote button{border:0;border-radius:14px;padding:16px 8px;font-weight:750;font-size:16px;cursor:pointer;transition:transform .12s}
+.vote button:active{transform:scale(.97)}
+.vote .no{background:var(--no-soft);color:var(--no)}
+.vote .yes{background:var(--yes-soft);color:var(--yes)}
+.vote .skip{background:transparent;border:1.5px solid var(--line);color:var(--muted);padding:16px 14px;font-size:14px}
+.under-actions{display:flex;justify-content:space-between;align-items:center}
+.linkbtn{background:none;border:0;padding:6px 0;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.linkbtn:disabled{opacity:.35;cursor:default}
+
+/* Dépouillement */
+.count-screen{flex:1;display:grid;place-items:center;text-align:center;gap:14px;min-height:60vh}
+.urn{width:120px;height:120px;position:relative;margin:0 auto}
+.urn .body{position:absolute;inset:44px 10px 0;border:4px solid var(--ink);border-radius:8px}
+.urn .slot{position:absolute;left:36px;right:36px;top:40px;height:8px;background:var(--paper);border:4px solid var(--ink);border-radius:2px}
+.urn .paper{position:absolute;left:44px;width:32px;height:44px;background:var(--sheet);border:2px solid var(--ink);top:0;animation:drop 1.1s ease-in infinite}
+@keyframes drop{0%{transform:translateY(-10px);opacity:0}25%{opacity:1}80%{transform:translateY(40px);opacity:1}100%{transform:translateY(46px);opacity:0}}
+
+/* Résultat */
+.bulletin{background:var(--sheet);color:var(--ink);border-radius:4px;box-shadow:var(--shadow);border:1px solid var(--line);padding:30px 20px 24px;text-align:center;
+  display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;animation:unfold .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes unfold{from{transform:rotateX(70deg) translateY(20px);opacity:0}to{transform:none;opacity:1}}
+.bulletin .cap{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.bulletin .who{font-family:var(--f-display);font-weight:900;font-stretch:70%;text-transform:uppercase;font-size:clamp(34px,10vw,48px);line-height:1;margin-top:8px}
+.bulletin .party{font-size:15px;font-weight:600;color:var(--muted)}
+.bulletin .pct{font-family:var(--f-display);font-weight:900;font-stretch:80%;font-size:64px;line-height:1;margin-top:14px;font-variant-numeric:tabular-nums;color:var(--envelope)}
+.bulletin .pct small{font-size:16px;font-weight:700;color:var(--muted);display:block;letter-spacing:.04em;text-transform:uppercase;margin-top:4px}
+.rank{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none}
+.rank button{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:4px 12px;width:100%;text-align:left;background:none;border:0;
+  border-bottom:1px solid var(--line);padding:12px 2px;cursor:pointer}
+.rank .n{font-family:var(--f-display);font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
+.rank .nm{font-weight:700;min-width:0}
+.rank .nm small{display:block;font-weight:500;color:var(--muted);font-size:13px}
+.rank .v{font-family:var(--f-display);font-weight:800;font-size:20px;font-variant-numeric:tabular-nums}
+.rank .meter{grid-column:2/4;height:5px;background:var(--line);border-radius:4px;overflow:hidden}
+.rank .meter i{display:block;height:100%;background:var(--ink);border-radius:4px}
+.rank li:first-child .meter i{background:var(--envelope)}
+.callout{background:var(--envelope-soft);border-radius:14px;padding:14px 16px;font-size:14px}
+
+/* Détail */
+.panel{background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.thm{display:grid;grid-template-columns:1fr 52px;gap:4px 10px;align-items:center;font-size:14px}
+.thm .meter{grid-column:1/3;height:6px;background:var(--line);border-radius:4px;overflow:hidden}
+.thm .meter i{display:block;height:100%;background:var(--envelope)}
+.thm b{font-variant-numeric:tabular-nums;text-align:right}
+.idea{display:grid;grid-template-columns:14px 1fr;gap:10px;font-size:14px;padding:6px 0;border-bottom:1px solid var(--line)}
+.idea:last-child{border-bottom:0}
+.dot{width:10px;height:10px;border-radius:50%;margin-top:6px}
+.dot.ok{background:var(--yes)} .dot.ko{background:var(--no)}
+
+/* Programmes à l'aveugle */
+.prog{background:var(--sheet);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:20px 18px;display:flex;flex-direction:column;gap:14px}
+.prog .letter{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.prog .letter b{font-family:var(--f-display);font-weight:900;font-stretch:70%;font-size:28px;white-space:nowrap;text-transform:uppercase;line-height:1}
+.prog ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.prog li{display:grid;grid-template-columns:12px 1fr;gap:10px;font-size:15px;line-height:1.4}
+.prog li::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--ink);margin-top:8px}
+.rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rate button{border:1.5px solid var(--line);background:transparent;border-radius:12px;padding:12px 4px;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted)}
+.rate button[aria-pressed="true"].r-1{background:var(--no-soft);color:var(--no);border-color:var(--no)}
+.rate button[aria-pressed="true"].r0{background:var(--line);color:var(--ink);border-color:var(--ink)}
+.rate button[aria-pressed="true"].r1{background:var(--yes-soft);color:var(--yes);border-color:var(--yes)}
+.reveal{font-size:14px;color:var(--muted);border-top:1px dashed var(--line);padding-top:12px}
+.reveal strong{color:var(--ink)}
+
+.infolist{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.infolist li{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.infolist .d{font-family:var(--f-display);font-weight:850;font-stretch:80%;font-size:20px;font-variant-numeric:tabular-nums;min-width:96px}
+.prose{display:flex;flex-direction:column;gap:12px;font-size:15px}
+.prose h3{margin-top:8px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);
+  padding:12px 18px;border-radius:999px;font-weight:600;font-size:14px;z-index:20;box-shadow:var(--shadow)}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="bar">
+    <button class="brand" id="home-btn" aria-label="Accueil"><i aria-hidden="true"></i>Isoloir</button>
+    <span class="spacer"></span>
+    <button class="iconbtn" id="info-btn">Infos</button>
+  </header>
+  <main id="view"></main>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="data.js"></script>
+<script>
+(function(){
+const T = window.ISO_THEMES, C = window.ISO_CANDIDATES, S = window.ISO_STATEMENTS, P = window.ISO_PROGRAMMES;
+const byId = Object.fromEntries(C.map(c=>[c.id,c]));
+const view = document.getElementById('view');
+const store = {
+  get(k){ try{ return JSON.parse(localStorage.getItem('iso27:'+k)); }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem('iso27:'+k, JSON.stringify(v)); }catch(e){} }
+};
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const coreCount = S.filter(s=>s.core).length;
+
+let state = { mode:null, queue:[], i:0, answers:{}, important:{}, priorities:[] };
+
+function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2200); }
+function go(html){ view.innerHTML = '<section class="screen">'+html+'</section>'; window.scrollTo(0,0); }
+
+/* ---------- Accueil ---------- */
+function home(){
+  const last = store.get('last');
+  go(`
+    <div class="stack" style="gap:14px;margin-top:8px">
+      <span class="eyebrow">Présidentielle · 18 avril et 2 mai 2027</span>
+      <h1>Choisis des idées, pas des noms.</h1>
+      <p class="lead">Des propositions réelles des candidats, sans nom ni parti. Tu tranches, on révèle à la fin de qui tu es le plus proche.</p>
+    </div>
+    <div class="stack">
+      <button class="mode primary" data-go="express"><b>Test express</b><span>Les idées qui départagent le plus</span><em>${coreCount} idées</em></button>
+      <button class="mode" data-go="full"><b>Test complet</b><span>Toutes les propositions, thème par thème</span><em>${S.length} idées</em></button>
+      <button class="mode" data-go="blind"><b>Programmes à l'aveugle</b><span>16 programmes résumés, identité cachée jusqu'au bout</span><em>16</em></button>
+    </div>
+    ${last ? `<button class="btn ghost" data-go="last">Revoir mon dernier résultat <small>${esc(byId[last.top]?.name||'')}</small></button>`:''}
+    <ol class="steps">
+      <li>Tu lis une proposition anonyme et tu dis d'accord, pas d'accord, ou sans avis.</li>
+      <li>Tu peux marquer une idée « importante pour moi » : elle compte double.</li>
+      <li>On compare tes réponses aux positions connues de chaque candidat et on lève le rideau.</li>
+    </ol>
+    <p class="notice">Outil indépendant, sans lien avec un parti. Positions à jour au ${window.ISO_UPDATED}, selon les programmes et déclarations publiés. Tes réponses restent sur ton téléphone. <button class="linkbtn" data-go="method">Voir la méthode</button></p>
+  `);
+}
+
+/* ---------- Priorités ---------- */
+function priorities(mode){
+  state = { mode, queue:[], i:0, answers:{}, important:{}, priorities:[] };
+  go(`
+    <div class="stack" style="gap:10px">
+      <span class="eyebrow">Avant de commencer</span>
+      <h2>Qu'est-ce qui compte le plus pour toi ?</h2>
+      <p class="small">Choisis jusqu'à 3 thèmes. Ils pèseront un peu plus dans le résultat. Tu peux aussi passer.</p>
+    </div>
+    <div class="chips" id="chips">
+      ${Object.entries(T).map(([k,v])=>`<button class="chip" aria-pressed="false" data-k="${k}">${esc(v)}</button>`).join('')}
+    </div>
+    <span class="spacer" style="flex:1"></span>
+    <button class="btn" id="start">Entrer dans l'isoloir</button>
+  `);
+  view.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
+    const on=b.getAttribute('aria-pressed')==='true', sel=view.querySelectorAll('.chip[aria-pressed="true"]').length;
+    if(!on && sel>=3){ toast('3 thèmes maximum'); return; }
+    b.setAttribute('aria-pressed', String(!on));
+  });
+  document.getElementById('start').onclick=()=>{
+    state.priorities=[...view.querySelectorAll('.chip[aria-pressed="true"]')].map(b=>b.dataset.k);
+    const pool = mode==='express' ? S.filter(s=>s.core) : S;
+    const themes = shuffle(Object.keys(T));
+    state.queue = themes.flatMap(t=>shuffle(pool.filter(s=>s.t===t)));
+    state.i=0; card();
+  };
+}
+
+/* ---------- Carte ---------- */
+function card(){
+  if(state.i>=state.queue.length){ return counting(); }
+  const s=state.queue[state.i], next=state.queue[state.i+1], n=state.queue.length;
+  go(`
+    <div class="progress"><div class="track"><i style="width:${(state.i/n*100).toFixed(1)}%"></i></div><span class="count">${state.i+1} / ${n}</span></div>
+    <div class="deck" id="deck">
+      ${next?`<div class="ballot under" aria-hidden="true"><span class="theme">${esc(T[next.t])}</span><div class="q">${esc(next.text)}</div></div>`:''}
+      <article class="ballot" id="ballot" aria-live="polite">
+        <span class="stamp yes">D'accord</span><span class="stamp no">Pas d'accord</span>
+        <span class="theme">${esc(T[s.t])}</span>
+        <div class="q">${esc(s.text)}</div>
+        <div class="ref"><span>Proposition n° ${state.i+1}</span><span>Auteur masqué</span></div>
+      </article>
+    </div>
+    <button class="weight" id="imp" aria-pressed="${state.important[s.id]?'true':'false'}"><span class="box"></span>Important pour moi, compte double</button>
+    <div class="vote">
+      <button class="no" data-v="-1">Pas d'accord</button>
+      <button class="skip" data-v="0">Sans avis</button>
+      <button class="yes" data-v="1">D'accord</button>
+    </div>
+    <div class="under-actions">
+      <button class="linkbtn" id="back" ${state.i===0?'disabled':''}>Revenir en arrière</button>
+      <button class="linkbtn" id="finish">${state.i>=8?'Voir mon résultat':'Arrêter'}</button>
+    </div>
+  `);
+  const ballot=document.getElementById('ballot');
+  document.getElementById('imp').onclick=e=>{ const b=e.currentTarget, on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',String(on)); state.important[s.id]=on; };
+  view.querySelectorAll('.vote button').forEach(b=>b.onclick=()=>answer(+b.dataset.v));
+  document.getElementById('back').onclick=()=>{ if(state.i>0){ state.i--; card(); } };
+  document.getElementById('finish').onclick=()=>{ if(Object.values(state.answers).filter(v=>v!==0).length<3){ home(); } else counting(); };
+  swipe(ballot);
+}
+function answer(v,dir){
+  const s=state.queue[state.i]; state.answers[s.id]=v;
+  const b=document.getElementById('ballot');
+  if(b){ const x = v===1?1:v===-1?-1:0; b.style.transform=`translate(${x*120}%, ${x?0:-30}px) rotate(${x*14}deg)`; b.style.opacity='0'; }
+  if(navigator.vibrate) try{navigator.vibrate(8)}catch(e){}
+  setTimeout(()=>{ state.i++; card(); }, 200);
+}
+function swipe(el){
+  let x0=null,y0=0,dx=0,id=null; const yes=el.querySelector('.stamp.yes'), no=el.querySelector('.stamp.no');
+  el.addEventListener('pointerdown',e=>{ x0=e.clientX;y0=e.clientY;dx=0;id=e.pointerId;el.style.transition='none'; });
+  el.addEventListener('pointermove',e=>{ if(x0===null||e.pointerId!==id)return; dx=e.clientX-x0; const dy=e.clientY-y0;
+    if(Math.abs(dx)<8 && Math.abs(dy)>Math.abs(dx)) return;
+    try{el.setPointerCapture(id)}catch(_){}
+    el.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`;
+    yes.style.opacity=Math.max(0,Math.min(1,dx/90)); no.style.opacity=Math.max(0,Math.min(1,-dx/90)); });
+  const end=()=>{ if(x0===null)return; el.style.transition=''; x0=null;
+    if(dx>90) return answer(1); if(dx<-90) return answer(-1);
+    el.style.transform=''; yes.style.opacity=0; no.style.opacity=0; };
+  el.addEventListener('pointerup',end); el.addEventListener('pointercancel',end);
+}
+
+/* ---------- Calcul ---------- */
+function compute(answers, important, prios){
+  const res = C.map(c=>{
+    let sc=0,max=0,n=0; const th={}; const agree=[],disagree=[];
+    for(const s of S){
+      const u=answers[s.id]; const p=s.pos[c.id];
+      if(!u || p===undefined) continue;
+      const w=(important[s.id]?2:1)*(prios.includes(s.t)?1.5:1);
+      sc+=w*u*p; max+=w*Math.abs(p); n++;
+      th[s.t]=th[s.t]||{sc:0,max:0}; th[s.t].sc+=w*u*p; th[s.t].max+=w*Math.abs(p);
+      (u*p>0?agree:disagree).push(s.id);
+    }
+    const pct = max>0 ? Math.round(50+50*sc/(max+4)) : null;
+    return { id:c.id, pct, n, th, agree, disagree, r:Math.random() };
+  });
+  return res.sort((a,b)=>(b.pct??-1)-(a.pct??-1) || b.n-a.n || a.r-b.r);
+}
+function counting(){
+  go(`<div class="count-screen"><div class="stack" style="gap:18px;align-items:center">
+    <div class="urn" aria-hidden="true"><div class="body"></div><div class="slot"></div><div class="paper"></div></div>
+    <h2>Dépouillement…</h2><p class="small">On compare tes ${Object.values(state.answers).filter(v=>v!==0).length} réponses aux positions des 16 candidats.</p></div></div>`);
+  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(()=>{
+    const res=compute(state.answers,state.important,state.priorities);
+    const saved={ answers:state.answers, important:state.important, priorities:state.priorities, top:res[0].id, at:Date.now() };
+    store.set('last',saved);
+    results(saved);
+  }, rm?200:1600);
+}
+
+/* ---------- Résultat ---------- */
+function results(saved){
+  const res=compute(saved.answers,saved.important||{},saved.priorities||[]);
+  const top=res[0], c=byId[top.id];
+  const answered=Object.values(saved.answers).filter(v=>v!==0).length;
+  go(`
+    <span class="eyebrow" style="text-align:center">Le programme le plus proche de tes réponses</span>
+    <div class="bulletin" role="img" aria-label="${esc(c.name)}, ${esc(c.party)}, ${top.pct}% de proximité">
+      <span class="cap">Élection présidentielle 2027</span>
+      <div class="who">${esc(c.name)}</div>
+      <div class="party">${esc(c.party)}</div>
+      <div class="pct">${top.pct}%<small>de proximité</small></div>
+    </div>
+    <div class="row">
+      <button class="btn" id="share">Partager</button>
+      <button class="btn ghost" data-detail="${top.id}">Pourquoi ?</button>
+    </div>
+    <p class="callout">Ce score mesure seulement ta proximité avec les positions connues de chaque candidat, sur ${answered} idées tranchées. Le choix final t'appartient : compare, lis les programmes complets, et vote.</p>
+    <div class="stack" style="gap:6px">
+      <h3>Classement complet</h3>
+      <p class="small">Touche un nom pour voir le détail par thème.</p>
+    </div>
+    <ol class="rank">
+      ${res.map((r,k)=>`<li><button data-detail="${r.id}">
+        <span class="n">${k+1}</span>
+        <span class="nm">${esc(byId[r.id].name)}<small>${esc(byId[r.id].party)} · ${r.n} idée${r.n>1?'s':''} comparée${r.n>1?'s':''}</small></span>
+        <span class="v">${r.pct===null?'–':r.pct+'%'}</span>
+        <span class="meter"><i style="width:${r.pct??0}%"></i></span></button></li>`).join('')}
+    </ol>
+    <div class="stack">
+      <button class="btn ghost" data-go="blind">Tester les programmes à l'aveugle</button>
+      <button class="btn ghost" data-go="${answered<S.length-5?'full':'home'}">${answered<S.length-5?'Affiner avec le test complet':'Retour à l\'accueil'}</button>
+    </div>
+  `);
+  view.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>detail(b.dataset.detail,saved));
+  document.getElementById('share').onclick=()=>share(c,top.pct);
+}
+function share(c,pct){
+  const url = location.href.split('#')[0];
+  const text = `Sur Isoloir 2027, le programme le plus proche de mes idées est celui de ${c.name} (${pct} %). Et toi ? Fais le test à l'aveugle :`;
+  if(navigator.share){ navigator.share({title:'Isoloir 2027',text,url}).catch(()=>{}); return; }
+  const full=text+' '+url;
+  if(navigator.clipboard){ navigator.clipboard.writeText(full).then(()=>toast('Texte copié, colle-le où tu veux')).catch(()=>toast(full)); }
+  else toast(full);
+}
+function detail(id,saved){
+  const res=compute(saved.answers,saved.important||{},saved.priorities||[]);
+  const r=res.find(x=>x.id===id), c=byId[id];
+  const sMap=Object.fromEntries(S.map(s=>[s.id,s]));
+  const themes=Object.keys(T).filter(t=>r.th[t]&&r.th[t].max>0).map(t=>({t,p:Math.round(50+50*r.th[t].sc/r.th[t].max)})).sort((a,b)=>b.p-a.p);
+  go(`
+    <button class="linkbtn" id="back" style="align-self:flex-start">Retour au classement</button>
+    <div class="stack" style="gap:6px">
+      <span class="eyebrow">${esc(c.party)}</span>
+      <h2>${esc(c.name)}</h2>
+      <p class="small">${r.pct===null?'Pas assez de positions comparables.':`${r.pct} % de proximité sur ${r.n} idées comparées.`}</p>
+    </div>
+    ${themes.length?`<div class="panel"><h3>Par thème</h3>${themes.map(x=>`<div class="thm"><span>${esc(T[x.t])}</span><b>${x.p}%</b><span class="meter"><i style="width:${x.p}%"></i></span></div>`).join('')}</div>`:''}
+    ${r.agree.length?`<div class="panel"><h3>Vous êtes d'accord sur</h3>${r.agree.map(i=>`<div class="idea"><span class="dot ok"></span><span>${esc(sMap[i].text)}</span></div>`).join('')}</div>`:''}
+    ${r.disagree.length?`<div class="panel"><h3>Vous divergez sur</h3>${r.disagree.map(i=>`<div class="idea"><span class="dot ko"></span><span>${esc(sMap[i].text)}</span></div>`).join('')}</div>`:''}
+    <div class="panel"><h3>Son programme en bref</h3><div class="prog" style="box-shadow:none;border:0;padding:0"><ul>${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div></div>
+  `);
+  document.getElementById('back').onclick=()=>results(saved);
+}
+
+/* ---------- Programmes à l'aveugle ---------- */
+function blind(){
+  const order=shuffle(C.map(c=>c.id));
+  const rating={};
+  const draw=()=>{
+    const done=Object.keys(rating).length;
+    go(`
+      <div class="stack" style="gap:10px">
+        <span class="eyebrow">Programmes à l'aveugle</span>
+        <h2>16 programmes, zéro nom.</h2>
+        <p class="small">Chaque programme est résumé en six mesures marquantes. Note ceux que tu lis : l'identité se révèle quand tu as noté au moins 4 programmes. L'ordre et les lettres changent à chaque visite.</p>
+      </div>
+      <div class="progress"><div class="track"><i style="width:${done/16*100}%"></i></div><span class="count">${done} / 16</span></div>
+      ${order.map((id,k)=>`<article class="prog" id="p-${id}">
+        <div class="letter"><b>Programme ${LETTERS[k]}</b></div>
+        <ul>${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul>
+        <div class="rate" role="group" aria-label="Ton avis sur le programme ${LETTERS[k]}">
+          ${[[-1,'Non'],[0,'Bof'],[1,'Oui']].map(([v,l])=>`<button class="r${v}" data-id="${id}" data-v="${v}" aria-pressed="${rating[id]===v}">${l}</button>`).join('')}
+        </div>
+      </article>`).join('')}
+      <button class="btn env" id="revealall" ${done<4?'disabled style="opacity:.45"':''}>Lever le rideau</button>
+    `);
+    view.querySelectorAll('.rate button').forEach(b=>b.onclick=()=>{
+      rating[b.dataset.id]=+b.dataset.v;
+      b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+      const d=Object.keys(rating).length; view.querySelector('.track i').style.width=(d/16*100)+'%'; view.querySelector('.count').textContent=d+' / 16';
+      const btn=document.getElementById('revealall'); if(d>=4){btn.disabled=false;btn.style.opacity='';}
+    });
+    document.getElementById('revealall').onclick=()=>{ if(Object.keys(rating).length>=4) revealBlind(order,rating); };
+  };
+  draw();
+}
+function revealBlind(order,rating){
+  const rated=order.map((id,k)=>({id,k,v:rating[id]})).filter(x=>x.v!==undefined).sort((a,b)=>b.v-a.v);
+  const label={1:'Oui',0:'Bof','-1':'Non'};
+  const liked=rated.filter(x=>x.v===1);
+  go(`
+    <div class="stack" style="gap:10px">
+      <span class="eyebrow">Le rideau se lève</span>
+      <h2>${liked.length?`Tu as dit oui à ${liked.length} programme${liked.length>1?'s':''}.`:'Aucun programme ne t\'a convaincu.'}</h2>
+      <p class="small">Voici qui se cache derrière chaque lettre.</p>
+    </div>
+    ${rated.map(x=>`<article class="prog">
+      <div class="letter"><b>Programme ${LETTERS[x.k]}</b><span class="small">Ton avis : ${label[x.v]}</span></div>
+      <div class="reveal"><strong>${esc(byId[x.id].name)}</strong> · ${esc(byId[x.id].party)}</div>
+    </article>`).join('')}
+    <p class="callout">Pour un résultat plus fin, idée par idée, fais le test complet.</p>
+    <button class="btn" data-go="full">Faire le test complet</button>
+    <button class="btn ghost" data-go="home">Retour à l'accueil</button>
+  `);
+}
+
+/* ---------- Infos & méthode ---------- */
+function info(){
+  const others="Delphine Batho, Dominique de Villepin, Natacha Polony, Olivier Becht, Florian Philippot, François Asselineau, Anasse Kazib, Selma Labib, Juan Branco, Clara Egger, Mira Markovic, Antoine Mikolajczak, Lydie Massard, Benoît Mathieu, Francis Lalanne";
+  go(`
+    <div class="stack" style="gap:8px"><span class="eyebrow">Infos pratiques</span><h2>Le calendrier</h2></div>
+    <ul class="infolist">
+      <li><span class="d">12 mars</span><span>Date limite de dépôt des 500 parrainages au Conseil constitutionnel (18 h). La liste officielle des candidats suit.</span></li>
+      <li><span class="d">18 avril</span><span>Premier tour de l'élection présidentielle.</span></li>
+      <li><span class="d">2 mai</span><span>Second tour.</span></li>
+    </ul>
+    <div class="panel">
+      <h3>Es-tu bien inscrit ?</h3>
+      <p class="small">Vérifie ton bureau de vote en deux minutes, et inscris-toi en ligne si besoin avant la date limite.</p>
+      <a class="btn" href="https://www.service-public.fr/particuliers/vosdroits/R51788" target="_blank" rel="noopener">Vérifier mon inscription</a>
+      <a class="btn ghost" href="https://www.service-public.fr/particuliers/vosdroits/F1367" target="_blank" rel="noopener">S'inscrire sur les listes</a>
+    </div>
+    <div class="prose">
+      <h3>Qui est dans l'app ?</h3>
+      <p>Les 16 candidats déclarés testés dans au moins un sondage et dont les propositions sont assez documentées pour être comparées. D'autres personnes ont annoncé leur candidature : ${others}. Elles seront ajoutées si leur programme se précise ou si elles obtiennent leurs parrainages.</p>
+    </div>
+    <button class="btn ghost" data-go="method">Comment le score est calculé</button>
+  `);
+}
+function method(){
+  go(`
+    <div class="stack" style="gap:8px"><span class="eyebrow">Méthode</span><h2>Comment ça marche</h2></div>
+    <div class="prose">
+      <p>Chaque idée est une proposition réellement portée par au moins un candidat. Pour chaque candidat, on note s'il est pour, plutôt pour, plutôt contre ou contre. Quand sa position n'est pas connue, l'idée ne compte pas pour lui.</p>
+      <h3>Le calcul</h3>
+      <p>Si tu es d'accord avec une idée qu'un candidat soutient, il gagne des points ; s'il s'y oppose, il en perd. Une idée « importante pour moi » compte double, un thème prioritaire compte 1,5 fois. Le score final va de 0 à 100 %, 50 % voulant dire « ni proche ni éloigné ». Un candidat comparé sur peu d'idées est ramené vers 50 % pour éviter les résultats extrêmes par hasard.</p>
+      <h3>Neutralité</h3>
+      <p>Les propositions sont formulées de la même façon pour tout le monde, l'ordre des thèmes et des idées est tiré au hasard, et les programmes à l'aveugle reçoivent une lettre différente à chaque visite. Aucune couleur de parti n'est utilisée.</p>
+      <h3>Sources</h3>
+      <p>Programmes, sites de campagne et déclarations publiques, à partir de la synthèse sourcée du <a href="https://barometre-2027.fr/programmes" target="_blank" rel="noopener">Baromètre citoyen 2027</a> et de la presse (franceinfo, Public Sénat, LCP, AFP). Certaines positions viennent de programmes antérieurs que les candidats n'ont pas encore actualisés. Mise à jour : ${window.ISO_UPDATED}.</p>
+      <h3>Limites</h3>
+      <p>Les programmes complets ne sont pas encore tous publiés. Un résumé ne remplace pas la lecture du programme d'un candidat. Ce test t'aide à réfléchir, il ne te dit pas pour qui voter.</p>
+      <h3>Vie privée</h3>
+      <p>Aucune donnée n'est envoyée : tes réponses restent dans ton navigateur.</p>
+    </div>
+    <button class="btn" data-go="home">Retour à l'accueil</button>
+  `);
+}
+
+/* ---------- Navigation ---------- */
+view.addEventListener('click',e=>{
+  const g=e.target.closest('[data-go]'); if(!g) return;
+  const k=g.dataset.go;
+  if(k==='express'||k==='full') priorities(k);
+  else if(k==='blind') blind();
+  else if(k==='method') method();
+  else if(k==='home') home();
+  else if(k==='last'){ const l=store.get('last'); if(l) results(l); }
+});
+document.getElementById('home-btn').onclick=home;
+document.getElementById('info-btn').onclick=info;
+home();
+
+if('serviceWorker' in navigator && location.protocol==='https:' && /github\.io$/.test(location.hostname)){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "name": "Isoloir 2027",
+  "short_name": "Isoloir",
+  "description": "Choisis des idées, pas des noms : trouve à l'aveugle le programme présidentiel 2027 le plus proche de toi.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#14161F",
+  "theme_color": "#14161F",
+  "lang": "fr",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
