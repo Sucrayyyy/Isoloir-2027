@@ -346,8 +346,8 @@ p{margin:0}
 <div class="toast" id="toast" hidden></div>
 <div class="modal" id="modal" hidden></div>
 
-<script src="data.js"></script>
-<script src="progs.js"></script>
+<script src="data.js?v=5"></script>
+<script src="progs.js?v=5"></script>
 <script>
 (function(){
 const T=window.ISO_THEMES, C=window.ISO_CANDIDATES, S=window.ISO_STATEMENTS, P=window.ISO_PROGRAMMES, F=window.ISO_FAMILIES;
@@ -878,7 +878,10 @@ document.getElementById('home-btn').onclick=home;
 document.getElementById('info-btn').onclick=info;
 {const d=daysLeft();if(d>0)document.getElementById('info-btn').textContent='J-'+d;}
 readHash();home();
-if('serviceWorker' in navigator&&isPages)navigator.serviceWorker.register('sw.js').catch(()=>{});
+if('serviceWorker' in navigator&&isPages){
+  navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{});
+  let reloaded=false;navigator.serviceWorker.addEventListener('controllerchange',()=>{if(reloaded)return;reloaded=true;location.reload()});
+}
 })();
 </script>
 
