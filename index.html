@@ -158,7 +158,26 @@ p{margin:0}
 .ballot .q{font-family:var(--f-display);font-weight:700;font-size:clamp(25px,7vw,30px);line-height:1.22;letter-spacing:-.02em;text-wrap:pretty;flex:1}
 .help-btn{align-self:flex-start;background:none;border:0;padding:0;color:var(--accent);font-weight:650;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:6px}
 .help-btn::before{content:"?";width:22px;height:22px;border-radius:50%;display:grid;place-items:center;border:1.5px solid currentColor;font-size:13px;font-weight:800}
-.help-txt{font-size:16px;line-height:1.5;color:var(--muted);background:var(--accent-soft);border-radius:var(--r-s);padding:12px 14px}
+.more{display:flex;flex-direction:column;gap:12px;background:var(--accent-soft);border-radius:var(--r-m);padding:16px}
+.more div{display:flex;flex-direction:column;gap:3px}
+.more b{font-size:13px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+.more b.p{color:var(--yes)} .more b.n{color:var(--no)}
+.more p{font-size:16px;line-height:1.5;color:var(--ink)}
+.more .src{font-size:13px;color:var(--faint)}
+.plist{list-style:none;margin:0;padding:0}
+.plist li+li{border-top:1px solid var(--hair)}
+.plist button{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;width:100%;background:none;border:0;padding:16px 0;text-align:left;cursor:pointer}
+.plist b{font-size:17px}
+.plist span{grid-column:1;font-size:14px;color:var(--muted)}
+.plist i{grid-row:1/3;grid-column:2;font-style:normal;color:var(--accent);font-weight:700;font-size:20px}
+.theme-sec{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
+.theme-sec .simple{font-size:17px;line-height:1.5;font-weight:550}
+.theme-sec .none{color:var(--faint);font-style:italic}
+.gl{padding:6px 20px}
+.gl div{padding:14px 0;display:flex;flex-direction:column;gap:4px}
+.gl div+div{border-top:1px solid var(--hair)}
+.gl b{font-size:17px}
+.gl p{font-size:16px;color:var(--muted);line-height:1.5}
 .stamp{position:absolute;top:22px;padding:6px 12px;border:3px solid;border-radius:12px;font-weight:850;font-size:18px;letter-spacing:.02em;text-transform:uppercase;opacity:0;pointer-events:none;background:var(--glass-hi)}
 .stamp.yes{right:18px;color:var(--yes);transform:rotate(-8deg)}
 .stamp.no{left:18px;color:var(--no);transform:rotate(8deg)}
@@ -168,11 +187,13 @@ p{margin:0}
 .weight[aria-pressed="true"]{color:var(--ink)}
 .weight[aria-pressed="true"] .box{background:var(--accent);border-color:var(--accent)}
 .weight[aria-pressed="true"] .box::after{content:"";width:7px;height:12px;border:solid var(--on-accent);border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
-.vote{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vote{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .vote button{border:1px solid var(--glass-border);border-radius:var(--r-m);min-height:64px;font-weight:750;font-size:18px;cursor:pointer;transition:transform .12s;
   -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
 .vote button:active{transform:scale(.96)}
 .vote .no{background:var(--no-tint);color:var(--no)}
+.vote .sno{background:color-mix(in srgb,var(--no-tint) 55%,var(--glass));color:var(--no);font-weight:650}
+.vote .syes{background:color-mix(in srgb,var(--yes-tint) 55%,var(--glass));color:var(--yes);font-weight:650}
 .vote .yes{background:var(--yes-tint);color:var(--yes)}
 .vote .skip{grid-column:1/3;min-height:50px;background:var(--glass);color:var(--muted);font-size:16px;font-weight:650}
 .under-actions{display:flex;justify-content:space-between;align-items:center}
@@ -245,6 +266,10 @@ p{margin:0}
 .rate button{border:1px solid var(--glass-border);background:var(--glass);border-radius:var(--r-s);min-height:50px;font-weight:700;font-size:16px;cursor:pointer;color:var(--muted)}
 .rate button[aria-pressed="true"].r-1{background:var(--no-tint);color:var(--no);border-color:var(--no)}
 .rate button[aria-pressed="true"].r0{background:var(--hair);color:var(--ink);border-color:var(--ink)}
+.rate.five{grid-template-columns:1fr 1.25fr .6fr 1.25fr 1fr;gap:6px}
+.rate.five button{font-size:13px;padding:6px 2px;line-height:1.2}
+.rate button[aria-pressed="true"].r-0\.5{background:var(--no-tint);color:var(--no);border-color:var(--no)}
+.rate button[aria-pressed="true"].r0\.5{background:var(--yes-tint);color:var(--yes);border-color:var(--yes)}
 .rate button[aria-pressed="true"].r1{background:var(--yes-tint);color:var(--yes);border-color:var(--yes)}
 .sticky-cta{position:sticky;bottom:calc(96px + env(safe-area-inset-bottom,0px));z-index:4;padding:10px;border-radius:calc(var(--r-m) + 8px)}
 
@@ -258,9 +283,9 @@ p{margin:0}
 
 /* Barre d'onglets */
 .tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:8;
-  width:calc(100% - 2*max(14px,env(safe-area-inset-left,0px)));max-width:528px;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:6px;border-radius:999px}
-.tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 2px 6px;border-radius:999px;
-  font-size:12px;font-weight:650;color:var(--muted);cursor:pointer;transition:background .2s,color .2s,transform .12s;min-width:0}
+  width:calc(100% - 2*max(10px,env(safe-area-inset-left,0px)));max-width:528px;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:0;padding:5px;border-radius:999px}
+.tabbar button{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:7px 0 6px;border-radius:999px;
+  font-size:11px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;font-weight:650;color:var(--muted);cursor:pointer;transition:background .2s,color .2s,transform .12s;min-width:0}
 .tabbar button:active{transform:scale(.94)}
 .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 .tabbar button[aria-current="page"]{background:var(--glass-hi);color:var(--accent);box-shadow:0 2px 10px -4px var(--shade)}
@@ -322,6 +347,7 @@ p{margin:0}
 <div class="modal" id="modal" hidden></div>
 
 <script src="data.js"></script>
+<script src="progs.js"></script>
 <script>
 (function(){
 const T=window.ISO_THEMES, C=window.ISO_CANDIDATES, S=window.ISO_STATEMENTS, P=window.ISO_PROGRAMMES, F=window.ISO_FAMILIES;
@@ -344,10 +370,11 @@ function haptic(){try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}}
 function daysLeft(){const d=new Date(window.ISO_ROUND1+'T08:00:00');return Math.max(0,Math.ceil((d-new Date())/864e5))}
 
 /* ----- Défi entre amis : réponses encodées dans le lien ----- */
-function encode(ans){let s=S.map(x=>ans[x.id]===1?'a':ans[x.id]===-1?'b':'0').join('');return s.replace(/0+$/,'')}
-function decode(code){const a={};[...code].forEach((ch,i)=>{if(S[i]){if(ch==='a')a[S[i].id]=1;else if(ch==='b')a[S[i].id]=-1}});return a}
+const ENC={'1':'A','0.5':'a','-0.5':'b','-1':'B'},DEC={A:1,a:.5,b:-.5,B:-1};
+function encode(ans){let s=S.map(x=>ENC[String(ans[x.id])]||'0').join('');return s.replace(/0+$/,'')}
+function decode(code){const a={};[...code].forEach((ch,i)=>{if(S[i]&&DEC[ch])a[S[i].id]=DEC[ch]});return a}
 function readHash(){
-  const m=location.hash.match(/^#d=([ab0]{1,200})\.([a-z]{1,4})$/);
+  const m=location.hash.match(/^#d=([aAbB0]{1,200})\.([a-z]{1,4})$/);
   if(m&&byId[m[2]]){friend={answers:decode(m[1]),top:m[2]};store.set('friend',friend);history.replaceState(null,'',BASE)}
   else friend=store.get('friend');
 }
@@ -372,7 +399,7 @@ function home(){nav('main','home');
     <div class="how glass">
       <h3>Comment ça marche</h3>
       <ol>
-        <li>Une idée s'affiche, sans nom ni parti. Tu dis d'accord ou pas d'accord. Un mot te bloque ? Touche « C'est quoi ? ».</li>
+        <li>Une question s'affiche, sans nom ni parti. Réponds de « Non » à « Oui », avec des nuances. Besoin de contexte ? Touche « En savoir plus » pour voir la situation et les arguments des deux camps.</li>
         <li>Coche « Important pour moi » sur les sujets qui comptent : ils pèsent double.</li>
         <li>On compare tes réponses aux positions des 16 candidats et on révèle ton classement.</li>
       </ol>
@@ -413,21 +440,29 @@ function card(){
     <div class="deck">
       ${nx?`<div class="ballot glass under" aria-hidden="true"></div>`:''}
       <article class="ballot glass hi" id="ballot">
-        <span class="stamp yes">D'accord</span><span class="stamp no">Pas d'accord</span>
+        <span class="stamp yes">Plutôt oui</span><span class="stamp no">Plutôt non</span>
         <span class="tag">${esc(T[s.t])}</span>
         <div class="q">${esc(s.text)}</div>
-        ${s.help?`<button class="help-btn" id="hb">C'est quoi ?</button><p class="help-txt" id="ht" hidden>${esc(s.help)}</p>`:''}
+        <button class="help-btn" id="hb">En savoir plus</button>
+        <div class="more" id="ht" hidden>
+          <div><b>Aujourd'hui</b><p>${esc(s.ctx)}</p></div>
+          <div><b class="p">Ceux qui sont pour disent</b><p>${esc(s.pour)}</p></div>
+          <div><b class="n">Ceux qui sont contre disent</b><p>${esc(s.contre)}</p></div>
+          <p class="src">Arguments résumés des deux camps, pas l'avis de l'app.</p>
+        </div>
       </article>
     </div>
-    ${state.i===0?'<p class="hint">Glisse la carte à droite pour « d\'accord », à gauche pour « pas d\'accord ».</p>':''}
+    ${state.i===0?'<p class="hint">Astuce : glisse la carte à droite pour « plutôt oui », à gauche pour « plutôt non ».</p>':''}
     <button class="weight" id="imp" aria-pressed="${state.important[s.id]?'true':'false'}"><span class="box"></span>Important pour moi</button>
     <div class="vote">
-      <button class="no" data-v="-1">Pas d'accord</button>
-      <button class="yes" data-v="1">D'accord</button>
+      <button class="no" data-v="-1">Non</button>
+      <button class="yes" data-v="1">Oui</button>
+      <button class="sno" data-v="-0.5">Plutôt non</button>
+      <button class="syes" data-v="0.5">Plutôt oui</button>
       <button class="skip" data-v="0">Je ne sais pas</button>
     </div>
   `);
-  const hb=document.getElementById('hb'); if(hb)hb.onclick=e=>{e.stopPropagation();const t=document.getElementById('ht');t.hidden=!t.hidden;hb.textContent=t.hidden?"C'est quoi ?":'Masquer'};
+  const hb=document.getElementById('hb'); if(hb)hb.onclick=e=>{e.stopPropagation();const t=document.getElementById('ht');t.hidden=!t.hidden;hb.textContent=t.hidden?'En savoir plus':'Masquer'};
   document.getElementById('imp').onclick=e=>{const b=e.currentTarget,on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',String(on));state.important[s.id]=on;save();haptic()};
   view.querySelectorAll('.vote button').forEach(b=>b.onclick=()=>answer(+b.dataset.v));
   nav('test');
@@ -436,7 +471,7 @@ function card(){
 function answer(v){
   state.answers[state.ids[state.i]]=v; haptic();
   const b=document.getElementById('ballot');
-  if(b){b.style.transform=v?`translateX(${v*125}%) rotate(${v*12}deg)`:'translateY(-40px) scale(.96)';b.style.opacity='0'}
+  if(b){b.style.transform=v?`translateX(${Math.sign(v)*125}%) rotate(${Math.sign(v)*12}deg)`:'translateY(-40px) scale(.96)';b.style.opacity='0'}
   setTimeout(()=>{state.i++;save();card()},220);
 }
 function swipe(el){
@@ -446,7 +481,7 @@ function swipe(el){
     if(!drag){if(Math.abs(dx)<10)return;if(Math.abs(dy)>Math.abs(dx)){x0=null;return}drag=true;el.style.transition='none';try{el.setPointerCapture(id)}catch(_){}}
     el.style.transform=`translateX(${dx}px) rotate(${dx/20}deg)`;yes.style.opacity=Math.max(0,Math.min(1,dx/90));no.style.opacity=Math.max(0,Math.min(1,-dx/90))});
   const end=()=>{if(x0===null)return;x0=null;if(!drag)return;el.style.transition='';
-    if(dx>90)return answer(1);if(dx<-90)return answer(-1);el.style.transform='';yes.style.opacity=0;no.style.opacity=0};
+    if(dx>90)return answer(0.5);if(dx<-90)return answer(-0.5);el.style.transform='';yes.style.opacity=0;no.style.opacity=0};
   el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
 }
 
@@ -510,7 +545,7 @@ function results(saved){
   const res=compute(saved.answers,saved.important||{},saved.priorities||[]);
   const top=res[0],c=byId[top.id],nAns=Object.values(saved.answers).filter(v=>v).length;
   let duo='';
-  if(friend){const common=S.filter(s=>saved.answers[s.id]&&friend.answers[s.id]);const same=common.filter(s=>saved.answers[s.id]===friend.answers[s.id]).length;
+  if(friend){const common=S.filter(s=>saved.answers[s.id]&&friend.answers[s.id]);const same=common.filter(s=>Math.sign(saved.answers[s.id])===Math.sign(friend.answers[s.id])).length;
     if(common.length>=3){const p=Math.round(same/common.length*100);
       duo=`<div class="duo glass"><span class="eyebrow">Ton ami et toi</span><div class="big">${p}<small>%</small></div><p class="small">d'accord sur les ${common.length} idées que vous avez tous les deux tranchées. Son programme le plus proche : <strong>${esc(byId[friend.top].name)}</strong>.</p></div>`}}
   go(`
@@ -608,10 +643,11 @@ function detail(id,saved){nav('main','result');
     ${th.length?`<div class="panel glass"><h3>Sujet par sujet</h3>${th.map(x=>`<div class="thm"><span>${esc(T[x.t])}</span><b>${x.p}%</b><span class="meter"><i style="width:${x.p}%"></i></span></div>`).join('')}</div>`:''}
     ${r.agree.length?`<div class="panel glass"><h3>Vous êtes d'accord</h3>${r.agree.map(i=>`<div class="idea"><span class="dot ok"></span><span>${esc(sById[i].text)}</span></div>`).join('')}</div>`:''}
     ${r.disagree.length?`<div class="panel glass"><h3>Vous n'êtes pas d'accord</h3>${r.disagree.map(i=>`<div class="idea"><span class="dot ko"></span><span>${esc(sById[i].text)}</span></div>`).join('')}</div>`:''}
-    <div class="panel glass"><h3>Son programme en bref</h3><ul class="bul">${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>
+    <div class="panel glass"><h3>Son programme en bref</h3><ul class="bul">${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul><button class="btn glass" id="fullprog">Lire tout son programme</button></div>
     <button class="btn glass" id="bk2">Retour au classement</button>
   `);
   document.getElementById('bk').onclick=document.getElementById('bk2').onclick=()=>results(saved);
+  document.getElementById('fullprog').onclick=()=>progPage(id,'s');
 }
 
 /* ----- Programmes à l'aveugle ----- */
@@ -700,6 +736,7 @@ function method(){nav('main','info');
 
 /* ----- Barre du bas ----- */
 const ICO={
+  learn:'<path d="M4 5.5A1.5 1.5 0 0 1 5.5 4H11v16H5.5A1.5 1.5 0 0 1 4 18.5zM20 5.5A1.5 1.5 0 0 0 18.5 4H13v16h5.5a1.5 1.5 0 0 0 1.5-1.5z"/>',
   home:'<path d="M4 11l8-7 8 7v8.5a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19.5z"/>',
   compare:'<rect x="3.5" y="4" width="7" height="16" rx="2"/><rect x="13.5" y="4" width="7" height="16" rx="2"/>',
   result:'<path d="M3.5 20.5h17M6 20.5v-6h4v6M10 20.5v-11h4v11M14 20.5v-8h4v8"/>',
@@ -718,7 +755,7 @@ function nav(mode,active){
     bar.innerHTML=tb('prev','Précédente','prev',{dis:state.i===0})+tb('pause','Menu','pause')+tb('finish','Résultat','result',{dis:n<5,cls:'primary'});
   } else {
     bar.className='tabbar glass';
-    bar.innerHTML=tb('home','Accueil','home',{cur:active==='home'})+tb('compare','Comparer','compare',{cur:active==='compare'})+tb('result','Résultat','result',{cur:active==='result'})+tb('info','Infos','info',{cur:active==='info'});
+    bar.innerHTML=tb('home','Accueil','home',{cur:active==='home'})+tb('learn','Programmes','learn',{cur:active==='learn'})+tb('compare','Comparer','compare',{cur:active==='compare'})+tb('result','Résultat','result',{cur:active==='result'})+tb('info','Infos','info',{cur:active==='info'});
   }
 }
 document.getElementById('tabbar').addEventListener('click',e=>{const b=e.target.closest('[data-tb]');if(!b||b.disabled)return;haptic();
@@ -729,10 +766,11 @@ document.getElementById('tabbar').addEventListener('click',e=>{const b=e.target.
   else if(k==='home')home();
   else if(k==='compare')compare();
   else if(k==='info')info();
+  else if(k==='learn')learn();
   else if(k==='result'){const l=store.get('last');if(l)results(l);else{priorities('express');toast("Fais d'abord un test pour voir ton résultat")}}
 });
 document.addEventListener('keydown',e=>{if(!document.getElementById('ballot')||e.metaKey||e.ctrlKey||e.altKey)return;
-  if(e.key==='ArrowRight'){e.preventDefault();answer(1)}else if(e.key==='ArrowLeft'){e.preventDefault();answer(-1)}
+  if(e.key==='ArrowRight'){e.preventDefault();answer(e.shiftKey?1:0.5)}else if(e.key==='ArrowLeft'){e.preventDefault();answer(e.shiftKey?-1:-0.5)}
   else if(e.key==='ArrowDown'){e.preventDefault();answer(0)}else if(e.key==='Backspace'&&state.i>0){e.preventDefault();state.i--;save();card()}});
 function countUp(el,to){if(!el||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const t0=performance.now(),d=900;
   const f=t=>{const k=Math.min(1,(t-t0)/d),v=Math.round(to*(1-Math.pow(1-k,3)));el.firstChild.nodeValue=v;if(k<1)requestAnimationFrame(f)};el.firstChild.nodeValue=0;requestAnimationFrame(f)}
@@ -768,19 +806,66 @@ function compare(a,b,onlyDiff){
 function review(saved){
   nav('main','result');
   const ids=S.filter(s=>s.id in saved.answers);
-  const lb=[[-1,'Non'],[0,'?'],[1,'Oui']];
+  const lb=[[-1,'Non'],[-0.5,'Plutôt non'],[0,'?'],[0.5,'Plutôt oui'],[1,'Oui']];
   go(`
     <button class="linkbtn" id="bk" style="align-self:flex-start">Retour au résultat</button>
     <div class="stack" style="gap:12px"><span class="eyebrow">Mes réponses</span><h2>Tu as changé d'avis ?</h2>
       <p class="small">Modifie une réponse, ton classement se met à jour tout de suite.</p></div>
     ${Object.keys(T).filter(t=>ids.some(s=>s.t===t)).map(t=>`<div class="board glass"><h3 style="padding-top:16px">${esc(T[t])}</h3>${ids.filter(s=>s.t===t).map(s=>`<div class="rv"><p>${esc(s.text)}</p>
-      <div class="rate">${lb.map(([v,l])=>`<button class="r${v}" data-id="${s.id}" data-v="${v}" aria-pressed="${saved.answers[s.id]===v}">${l}</button>`).join('')}</div></div>`).join('')}</div>`).join('')}
+      <div class="rate five">${lb.map(([v,l])=>`<button class="r${v}" data-id="${s.id}" data-v="${v}" aria-pressed="${saved.answers[s.id]===v}">${l}</button>`).join('')}</div></div>`).join('')}</div>`).join('')}
     <button class="btn accent" id="bk2">Voir mon résultat mis à jour</button>
   `);
   view.querySelectorAll('.rate button').forEach(b=>b.onclick=()=>{saved.answers[b.dataset.id]=+b.dataset.v;haptic();
     b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
     saved.top=compute(saved.answers,saved.important||{},saved.priorities||[])[0].id;store.set('last',saved)});
   document.getElementById('bk').onclick=document.getElementById('bk2').onclick=()=>results(saved);
+}
+
+/* ----- Onglet Programmes : lire et apprendre ----- */
+const lastName=n=>n.split(' ').slice(-1)[0];
+const slug=n=>n.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]+/g,'-').replace(/^-|-$/g,'');
+function learn(tab){
+  nav('main','learn');tab=tab||'cand';
+  const sorted=C.slice().sort((a,b)=>lastName(a.name).localeCompare(lastName(b.name),'fr'));
+  go(`
+    <div class="stack" style="gap:12px"><span class="eyebrow">S'informer</span><h2>Programmes et politique</h2>
+      <p class="small">Lis ce que propose chaque candidat, en version simple ou détaillée, et révise les mots de la politique.</p></div>
+    <div class="seg glass" role="tablist">
+      <button role="tab" aria-selected="${tab==='cand'}" data-lt="cand">Candidats</button>
+      <button role="tab" aria-selected="${tab==='gl'}" data-lt="gl">Lexique</button>
+      <button role="tab" aria-selected="${tab==='el'}" data-lt="el">L'élection</button>
+    </div>
+    ${tab==='cand'?`<div class="board glass"><ul class="plist">${sorted.map(c=>`<li><button data-prog="${c.id}"><b>${esc(c.name)}</b><span>${esc(c.party)} · ${esc(famById[c.fam].name)}</span><i aria-hidden="true">›</i></button></li>`).join('')}</ul></div>
+      <p class="tiny" style="padding:0 6px">Classés par ordre alphabétique du nom de famille.</p>`:''}
+    ${tab==='gl'?`<div class="gl glass">${window.ISO_GLOSSARY.map(([w,d])=>`<div><b>${esc(w)}</b><p>${esc(d)}</p></div>`).join('')}</div>`:''}
+    ${tab==='el'?`<div class="gl glass">${window.ISO_ELECTION.map(([w,d])=>`<div><b>${esc(w)}</b><p>${esc(d)}</p></div>`).join('')}</div>
+      <a class="btn accent" href="https://www.service-public.fr/particuliers/vosdroits/R51788" target="_blank" rel="noopener">Vérifier mon inscription</a>`:''}
+  `);
+  view.querySelectorAll('[data-lt]').forEach(b=>b.onclick=()=>{haptic();learn(b.dataset.lt)});
+  view.querySelectorAll('[data-prog]').forEach(b=>b.onclick=()=>progPage(b.dataset.prog,'s'));
+}
+function progPage(id,mode){
+  nav('main','learn');
+  const c=byId[id],p=window.ISO_PROGS[id];
+  go(`
+    <button class="linkbtn" id="bk" style="align-self:flex-start">Tous les candidats</button>
+    <div class="stack" style="gap:8px"><span class="fam" style="align-self:flex-start">${esc(famById[c.fam].name)}</span><h2>${esc(c.name)}</h2><p class="small"><strong>${esc(c.party)}</strong>. ${esc(p.intro)}</p></div>
+    <div class="seg glass" role="tablist" style="grid-template-columns:1fr 1fr">
+      <button role="tab" aria-selected="${mode==='s'}" data-m="s">Version simple</button>
+      <button role="tab" aria-selected="${mode==='d'}" data-m="d">Version détaillée</button>
+    </div>
+    ${Object.keys(T).map(t=>{const x=p.t[t];const empty=!x.d.length;return`<section class="theme-sec glass"><span class="tag">${esc(T[t])}</span>
+      ${mode==='s'||empty?`<p class="simple ${empty?'none':''}">${esc(x.s)}</p>`:`<ul class="bul">${x.d.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`}</section>`}).join('')}
+    <p class="tiny" style="padding:0 6px">« (2022) » signale une mesure d'un ancien programme pas encore mise à jour. Résumé fait à partir de sources publiques, à jour au ${window.ISO_UPDATED}.</p>
+    <div class="stack">
+      ${p.site?`<a class="btn accent" href="${p.site[1]}" target="_blank" rel="noopener">${esc(p.site[0])}</a>`:`<p class="note glass">Pas encore de programme complet publié en ligne.</p>`}
+      <a class="btn glass" href="https://barometre-2027.fr/programmes/${slug(c.name)}" target="_blank" rel="noopener">Toutes les sources, mesure par mesure</a>
+      <button class="btn glass" id="cmp">Le comparer à un autre candidat</button>
+    </div>
+  `);
+  document.getElementById('bk').onclick=()=>learn('cand');
+  view.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{haptic();progPage(id,b.dataset.m)});
+  document.getElementById('cmp').onclick=()=>compare(id,id==='jlm'?'mlp':'jlm');
 }
 
 /* ----- Navigation ----- */
