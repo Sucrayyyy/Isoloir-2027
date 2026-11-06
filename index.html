@@ -6,540 +6,668 @@
 <title>Isoloir 2027</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Choisis des idées, pas des noms. Découvre à l'aveugle le programme présidentiel 2027 le plus proche de tes convictions.">
-<meta name="theme-color" content="#14161F">
+<meta name="theme-color" content="#EEF0F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#07080F" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Isoloir">
+<meta property="og:title" content="Isoloir 2027">
+<meta property="og:description" content="Choisis des idées, pas des noms. Quel programme présidentiel te ressemble vraiment ?">
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Public+Sans:wght@400;500;600;700&display=swap">
 <style>
-/* Layout : une colonne d'application (max 560px), en-tête collant, écrans plein cadre.
-   Matière : le bulletin de vote blanc, l'encre noire, l'enveloppe bleu-gris de l'isoloir. */
+/* Layout : une colonne d'app iPhone (max 560px), barre flottante en verre, cartes en verre dépoli
+   posées sur un fond de lumières pastel neutres (aucune couleur de parti). */
 :root{
-  --paper:#F6F6F2; --sheet:#FFFFFF; --ink:#14161F; --muted:#5E6170; --line:#DCDDE3;
-  --envelope:#5B67FF; --envelope-soft:#E7E9FF; --yes:#14805A; --yes-soft:#DDF2E8;
-  --no:#C23A2E; --no-soft:#F8E1DE; --shadow:0 1px 0 rgba(20,22,31,.06),0 12px 28px -14px rgba(20,22,31,.28);
-  --f-display:"Archivo","Arial Narrow",system-ui,sans-serif;
-  --f-body:"Public Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --bg:#EEF0F6; --ink:#0F1222; --muted:#4B5068; --faint:#7A7F96;
+  --glass:rgba(255,255,255,.58); --glass-hi:rgba(255,255,255,.82); --glass-border:rgba(255,255,255,.75);
+  --hair:rgba(15,18,34,.09); --spec:rgba(255,255,255,.9); --shade:rgba(31,38,92,.18);
+  --accent:#4C47E0; --accent-soft:rgba(76,71,224,.12); --on-accent:#FFFFFF;
+  --yes:#0E8A5C; --yes-tint:rgba(14,138,92,.14); --no:#C7362B; --no-tint:rgba(199,54,43,.12);
+  --b1:#C9C2FF; --b2:#B4E1FF; --b3:#FFD6C4; --b4:#C6F0DF; --blob-op:.85;
+  --solid:#0F1222; --on-solid:#FFFFFF;
+  --f-ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,system-ui,sans-serif;
+  --f-display:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,system-ui,sans-serif;
+  --f-num:ui-rounded,"SF Pro Rounded",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --r-l:28px; --r-m:20px; --r-s:14px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --paper:#0E0F15; --sheet:#181A23; --ink:#EEEEEA; --muted:#9A9DAB; --line:#2A2D3A;
-  --envelope:#8C95FF; --envelope-soft:#23264A; --yes:#3CC48D; --yes-soft:#11291F;
-  --no:#F0786C; --no-soft:#331816; --shadow:0 1px 0 rgba(0,0,0,.4),0 14px 30px -14px rgba(0,0,0,.7); color-scheme:dark }}
+  --bg:#07080F; --ink:#F2F3F8; --muted:#B0B5CA; --faint:#868BA3;
+  --glass:rgba(255,255,255,.075); --glass-hi:rgba(255,255,255,.13); --glass-border:rgba(255,255,255,.16);
+  --hair:rgba(255,255,255,.1); --spec:rgba(255,255,255,.22); --shade:rgba(0,0,0,.55);
+  --accent:#9C98FF; --accent-soft:rgba(156,152,255,.16); --on-accent:#0B0C18;
+  --yes:#41D69C; --yes-tint:rgba(65,214,156,.16); --no:#FF7D72; --no-tint:rgba(255,125,114,.15);
+  --b1:#3E3393; --b2:#0E4D70; --b3:#6E2C3B; --b4:#12584A; --blob-op:.75;
+  --solid:#F2F3F8; --on-solid:#0B0C18; color-scheme:dark }}
 :root[data-theme="dark"]{
-  --paper:#0E0F15; --sheet:#181A23; --ink:#EEEEEA; --muted:#9A9DAB; --line:#2A2D3A;
-  --envelope:#8C95FF; --envelope-soft:#23264A; --yes:#3CC48D; --yes-soft:#11291F;
-  --no:#F0786C; --no-soft:#331816; --shadow:0 1px 0 rgba(0,0,0,.4),0 14px 30px -14px rgba(0,0,0,.7); color-scheme:dark }
+  --bg:#07080F; --ink:#F2F3F8; --muted:#B0B5CA; --faint:#868BA3;
+  --glass:rgba(255,255,255,.075); --glass-hi:rgba(255,255,255,.13); --glass-border:rgba(255,255,255,.16);
+  --hair:rgba(255,255,255,.1); --spec:rgba(255,255,255,.22); --shade:rgba(0,0,0,.55);
+  --accent:#9C98FF; --accent-soft:rgba(156,152,255,.16); --on-accent:#0B0C18;
+  --yes:#41D69C; --yes-tint:rgba(65,214,156,.16); --no:#FF7D72; --no-tint:rgba(255,125,114,.15);
+  --b1:#3E3393; --b2:#0E4D70; --b3:#6E2C3B; --b4:#12584A; --blob-op:.75;
+  --solid:#F2F3F8; --on-solid:#0B0C18; color-scheme:dark }
 
 *{box-sizing:border-box}
-html,body{height:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.5;
-  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;overscroll-behavior-y:none}
-body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+[hidden]{display:none!important}
+html,body{min-height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:17px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:transparent}
 button{font:inherit;color:inherit}
-a{color:var(--envelope)}
-:focus-visible{outline:3px solid var(--envelope);outline-offset:2px;border-radius:6px}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:12px}
 
-.app{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;
-  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 24px}
-.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);display:flex;align-items:center;gap:12px;padding-block:12px}
-.brand{font-family:var(--f-display);font-weight:850;font-stretch:72%;font-size:22px;letter-spacing:.01em;text-transform:uppercase;display:flex;align-items:center;gap:8px;background:none;border:0;padding:0;cursor:pointer}
-.brand i{display:inline-block;width:18px;height:22px;border:2.5px solid var(--ink);border-radius:3px;position:relative}
-.brand i::after{content:"";position:absolute;left:3px;right:3px;top:-6px;height:9px;background:var(--envelope);border:2px solid var(--paper)}
+/* Fond lumineux */
+.sky{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.sky i{position:absolute;width:62vmax;height:62vmax;border-radius:50%;filter:blur(70px);opacity:var(--blob-op);animation:float 26s ease-in-out infinite alternate}
+.sky i:nth-child(1){background:var(--b1);left:-22vmax;top:-18vmax}
+.sky i:nth-child(2){background:var(--b2);right:-24vmax;top:8vmax;animation-delay:-6s}
+.sky i:nth-child(3){background:var(--b3);left:-14vmax;bottom:-26vmax;animation-delay:-12s}
+.sky i:nth-child(4){background:var(--b4);right:-18vmax;bottom:-20vmax;animation-delay:-18s;width:48vmax;height:48vmax}
+@keyframes float{from{transform:translate(0,0) scale(1)}to{transform:translate(6vmax,5vmax) scale(1.12)}}
+
+/* Verre */
+.glass{position:relative;background:var(--glass);-webkit-backdrop-filter:blur(26px) saturate(180%);backdrop-filter:blur(26px) saturate(180%);
+  border:1px solid var(--glass-border);border-radius:var(--r-l);
+  box-shadow:inset 0 1px 0 var(--spec),inset 0 -1px 0 rgba(255,255,255,.08),0 18px 40px -22px var(--shade)}
+.glass.hi{background:var(--glass-hi)}
+
+.app{position:relative;z-index:1;max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;
+  padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px));padding-block:0 36px}
+.bar{position:sticky;top:calc(env(safe-area-inset-top,0px) + 8px);z-index:5;margin-top:8px;display:flex;align-items:center;gap:10px;
+  padding:8px 8px 8px 16px;border-radius:999px}
+.brand{display:flex;align-items:center;gap:9px;background:none;border:0;padding:0;cursor:pointer;font-weight:750;font-size:18px;letter-spacing:-.01em}
+.brand svg{width:22px;height:22px}
 .bar .spacer{flex:1}
-.iconbtn{background:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
+.pill{border:0;border-radius:999px;padding:9px 16px;font-size:15px;font-weight:600;cursor:pointer;background:var(--accent-soft);color:var(--accent)}
 
-.screen{display:flex;flex-direction:column;gap:20px;flex:1;animation:in .28s ease both}
-@keyframes in{from{opacity:.4;transform:translateY(6px)}to{opacity:1;transform:none}}
-@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+main{display:block}
+.screen{display:flex;flex-direction:column;gap:22px;padding-top:26px;animation:in .35s cubic-bezier(.2,.8,.2,1) both}
+@keyframes in{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 
-.eyebrow{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.02}
-h1{font-size:clamp(44px,13vw,68px);font-weight:900;font-stretch:68%;text-transform:uppercase;letter-spacing:-.005em}
-h2{font-size:30px;font-weight:850;font-stretch:75%;text-transform:uppercase}
-h3{font-size:19px;font-weight:750;font-stretch:90%}
+.eyebrow{font-size:13px;font-weight:650;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;letter-spacing:-.025em}
+h1{font-size:clamp(38px,11vw,52px);line-height:1.04;font-weight:800}
+h2{font-size:30px;line-height:1.1;font-weight:780}
+h3{font-size:20px;line-height:1.25;font-weight:700;letter-spacing:-.015em}
 p{margin:0}
-.lead{font-size:18px;color:var(--muted);max-width:34ch}
-.small{font-size:13px;color:var(--muted)}
-
-.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;border:0;border-radius:14px;padding:16px 18px;
-  font-weight:700;font-size:17px;cursor:pointer;background:var(--ink);color:var(--paper);text-decoration:none;transition:transform .12s}
-.btn:active{transform:scale(.98)}
-.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.btn.env{background:var(--envelope);color:#fff}
-.btn small{font-weight:500;opacity:.75;font-size:13px}
-.stack{display:flex;flex-direction:column;gap:10px}
+.lead{font-size:19px;line-height:1.5;color:var(--muted);max-width:32ch}
+.small{font-size:15px;color:var(--muted);line-height:1.5}
+.tiny{font-size:13px;color:var(--faint)}
+.stack{display:flex;flex-direction:column;gap:12px}
 .row{display:flex;gap:10px}
 .row>*{flex:1;min-width:0}
 
-.mode{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;text-align:left;width:100%;padding:18px;border-radius:16px;
-  background:var(--sheet);border:1px solid var(--line);cursor:pointer;box-shadow:var(--shadow)}
-.mode b{font-family:var(--f-display);font-size:20px;font-weight:800;font-stretch:85%}
-.mode span{grid-column:1;color:var(--muted);font-size:14px}
-.mode em{grid-row:1/3;grid-column:2;font-style:normal;font-family:var(--f-display);font-weight:800;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
-  background:var(--envelope-soft);color:var(--envelope);border-radius:999px;padding:6px 10px}
-.mode.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.mode.primary span{color:color-mix(in srgb,var(--paper) 70%,transparent)}
+.chip-info{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;font-size:14px;font-weight:650}
+.chip-info b{font-family:var(--f-num);font-size:16px}
 
-.steps{display:grid;gap:10px;margin:0;padding:0;list-style:none;counter-reset:s}
-.steps li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:baseline;counter-increment:s;font-size:15px}
-.steps li::before{content:counter(s);font-family:var(--f-display);font-weight:800;font-size:15px;width:24px;height:24px;border-radius:50%;
-  display:grid;place-items:center;border:1.5px solid var(--ink)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:var(--r-m);min-height:56px;padding:14px 18px;
+  font-weight:700;font-size:17px;cursor:pointer;background:var(--solid);color:var(--on-solid);text-decoration:none;transition:transform .15s,opacity .15s;text-align:center}
+.btn:active{transform:scale(.97)}
+.btn.glass{background:var(--glass);color:var(--ink)}
+.btn.accent{background:var(--accent);color:var(--on-accent)}
+.btn[disabled]{opacity:.4;pointer-events:none}
 
-.notice{border-top:1px solid var(--line);padding-top:14px;font-size:13px;color:var(--muted)}
+.mode{display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 14px;width:100%;text-align:left;padding:22px;cursor:pointer;border-radius:var(--r-l);transition:transform .15s}
+.mode:active{transform:scale(.98)}
+.mode b{font-family:var(--f-display);font-size:21px;font-weight:750;letter-spacing:-.02em}
+.mode span{grid-column:1;font-size:15px;color:var(--muted);line-height:1.4}
+.mode em{grid-row:1/3;grid-column:2;font-style:normal;text-align:right;font-size:13px;color:var(--faint);font-weight:600;line-height:1.3}
+.mode em strong{display:block;font-family:var(--f-num);font-size:26px;color:var(--ink);font-weight:750}
+.mode.main{background:var(--solid);color:var(--on-solid);border-color:transparent}
+.mode.main span,.mode.main em{color:color-mix(in srgb,var(--on-solid) 72%,transparent)}
+.mode.main em strong{color:var(--on-solid)}
+
+.banner{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:var(--r-m);cursor:pointer;text-align:left;width:100%;border:1px solid var(--glass-border)}
+.banner div{flex:1;min-width:0}
+.banner b{display:block;font-size:16px}
+.banner span{font-size:14px;color:var(--muted)}
+.banner .go{font-weight:700;color:var(--accent);font-size:15px}
+
+.how{padding:22px;display:flex;flex-direction:column;gap:16px}
+.how ol{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;counter-reset:s}
+.how li{display:grid;grid-template-columns:34px 1fr;gap:12px;align-items:start;counter-increment:s;font-size:16px;line-height:1.45}
+.how li::before{content:counter(s);font-family:var(--f-num);font-weight:750;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-size:15px}
+.foot{font-size:14px;color:var(--faint);text-align:center;line-height:1.5;padding:0 8px}
+.linkbtn{background:none;border:0;padding:4px 2px;color:var(--accent);font-size:15px;font-weight:600;cursor:pointer}
+.linkbtn.muted{color:var(--muted)}
+.linkbtn:disabled{opacity:.3;cursor:default}
 
 /* Priorités */
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{border:1.5px solid var(--line);background:var(--sheet);border-radius:999px;padding:10px 14px;font-size:15px;font-weight:600;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid var(--glass-border);background:var(--glass);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-radius:999px;
+  padding:12px 16px;font-size:16px;font-weight:600;cursor:pointer;transition:transform .12s}
+.chip:active{transform:scale(.96)}
+.chip[aria-pressed="true"]{background:var(--solid);color:var(--on-solid);border-color:transparent}
 
-/* Carte-bulletin */
-.progress{display:flex;align-items:center;gap:12px}
-.track{flex:1;height:4px;background:var(--line);border-radius:4px;overflow:hidden}
-.track i{display:block;height:100%;background:var(--ink);border-radius:4px;transition:width .25s}
-.count{font-variant-numeric:tabular-nums;font-size:13px;font-weight:700;color:var(--muted);min-width:48px;text-align:right}
-.deck{position:relative;flex:1;min-height:300px;display:grid;touch-action:pan-y}
-.ballot{grid-area:1/1;align-self:stretch;background:var(--sheet);border-radius:6px;box-shadow:var(--shadow);border:1px solid var(--line);
-  padding:26px 22px 22px;display:flex;flex-direction:column;gap:16px;position:relative;user-select:none;-webkit-user-select:none;
-  will-change:transform;transition:transform .25s ease,opacity .25s ease}
-.ballot.under{transform:translateY(10px) scale(.96);opacity:.6;pointer-events:none}
-.ballot .theme{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--envelope)}
-.ballot .q{font-family:var(--f-display);font-weight:780;font-stretch:88%;font-size:clamp(25px,7.2vw,33px);line-height:1.12;text-wrap:balance;flex:1}
-.ballot .ref{font-size:12px;color:var(--muted);display:flex;justify-content:space-between;gap:8px;border-top:1px dashed var(--line);padding-top:12px;font-variant-numeric:tabular-nums}
-.stamp{position:absolute;top:22px;padding:4px 10px;border:3px solid;border-radius:6px;font-family:var(--f-display);font-weight:900;font-stretch:75%;
-  font-size:22px;text-transform:uppercase;opacity:0;transform:rotate(-8deg);pointer-events:none}
-.stamp.yes{right:18px;color:var(--yes);border-color:var(--yes)}
-.stamp.no{left:18px;color:var(--no);border-color:var(--no);transform:rotate(8deg)}
-.weight{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:600;cursor:pointer;color:var(--muted);background:none;border:0;padding:6px 0}
-.weight .box{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line);display:grid;place-items:center}
+/* Carte */
+.progress{display:flex;align-items:center;gap:14px}
+.track{flex:1;height:6px;background:var(--hair);border-radius:6px;overflow:hidden}
+.track i{display:block;height:100%;background:var(--accent);border-radius:6px;transition:width .3s}
+.count{font-family:var(--f-num);font-variant-numeric:tabular-nums;font-size:15px;font-weight:700;color:var(--muted);min-width:54px;text-align:right}
+.deck{position:relative;display:grid;touch-action:pan-y;min-height:330px}
+.ballot{grid-area:1/1;padding:28px 24px 22px;display:flex;flex-direction:column;gap:18px;user-select:none;-webkit-user-select:none;
+  will-change:transform;transition:transform .28s cubic-bezier(.2,.8,.2,1),opacity .28s;touch-action:pan-y}
+.ballot.under{transform:translateY(14px) scale(.94);opacity:.55;pointer-events:none}
+.tag{align-self:flex-start;font-size:14px;font-weight:650;color:var(--accent);background:var(--accent-soft);padding:6px 12px;border-radius:999px}
+.ballot .q{font-family:var(--f-display);font-weight:700;font-size:clamp(25px,7vw,30px);line-height:1.22;letter-spacing:-.02em;text-wrap:pretty;flex:1}
+.help-btn{align-self:flex-start;background:none;border:0;padding:0;color:var(--accent);font-weight:650;font-size:15px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.help-btn::before{content:"?";width:22px;height:22px;border-radius:50%;display:grid;place-items:center;border:1.5px solid currentColor;font-size:13px;font-weight:800}
+.help-txt{font-size:16px;line-height:1.5;color:var(--muted);background:var(--accent-soft);border-radius:var(--r-s);padding:12px 14px}
+.stamp{position:absolute;top:22px;padding:6px 12px;border:3px solid;border-radius:12px;font-weight:850;font-size:18px;letter-spacing:.02em;text-transform:uppercase;opacity:0;pointer-events:none;background:var(--glass-hi)}
+.stamp.yes{right:18px;color:var(--yes);transform:rotate(-8deg)}
+.stamp.no{left:18px;color:var(--no);transform:rotate(8deg)}
+.hint{text-align:center;font-size:14px;color:var(--faint)}
+.weight{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:600;cursor:pointer;color:var(--muted);background:none;border:0;padding:4px 2px;align-self:flex-start}
+.weight .box{width:26px;height:26px;border-radius:8px;border:2px solid var(--hair);display:grid;place-items:center;background:var(--glass)}
 .weight[aria-pressed="true"]{color:var(--ink)}
-.weight[aria-pressed="true"] .box{background:var(--envelope);border-color:var(--envelope)}
-.weight[aria-pressed="true"] .box::after{content:"";width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
-.vote{display:grid;grid-template-columns:1fr auto 1fr;gap:10px}
-.vote button{border:0;border-radius:14px;padding:16px 8px;font-weight:750;font-size:16px;cursor:pointer;transition:transform .12s}
-.vote button:active{transform:scale(.97)}
-.vote .no{background:var(--no-soft);color:var(--no)}
-.vote .yes{background:var(--yes-soft);color:var(--yes)}
-.vote .skip{background:transparent;border:1.5px solid var(--line);color:var(--muted);padding:16px 14px;font-size:14px}
+.weight[aria-pressed="true"] .box{background:var(--accent);border-color:var(--accent)}
+.weight[aria-pressed="true"] .box::after{content:"";width:7px;height:12px;border:solid var(--on-accent);border-width:0 2.5px 2.5px 0;transform:translateY(-1px) rotate(45deg)}
+.vote{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vote button{border:1px solid var(--glass-border);border-radius:var(--r-m);min-height:64px;font-weight:750;font-size:18px;cursor:pointer;transition:transform .12s;
+  -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)}
+.vote button:active{transform:scale(.96)}
+.vote .no{background:var(--no-tint);color:var(--no)}
+.vote .yes{background:var(--yes-tint);color:var(--yes)}
+.vote .skip{grid-column:1/3;min-height:50px;background:var(--glass);color:var(--muted);font-size:16px;font-weight:650}
 .under-actions{display:flex;justify-content:space-between;align-items:center}
-.linkbtn{background:none;border:0;padding:6px 0;color:var(--muted);font-size:14px;font-weight:600;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
-.linkbtn:disabled{opacity:.35;cursor:default}
 
 /* Dépouillement */
-.count-screen{flex:1;display:grid;place-items:center;text-align:center;gap:14px;min-height:60vh}
-.urn{width:120px;height:120px;position:relative;margin:0 auto}
-.urn .body{position:absolute;inset:44px 10px 0;border:4px solid var(--ink);border-radius:8px}
-.urn .slot{position:absolute;left:36px;right:36px;top:40px;height:8px;background:var(--paper);border:4px solid var(--ink);border-radius:2px}
-.urn .paper{position:absolute;left:44px;width:32px;height:44px;background:var(--sheet);border:2px solid var(--ink);top:0;animation:drop 1.1s ease-in infinite}
-@keyframes drop{0%{transform:translateY(-10px);opacity:0}25%{opacity:1}80%{transform:translateY(40px);opacity:1}100%{transform:translateY(46px);opacity:0}}
+.counting{min-height:62vh;display:grid;place-items:center;text-align:center}
+.urn{width:120px;height:120px;position:relative;margin:0 auto 8px}
+.urn .body{position:absolute;inset:46px 12px 0;border-radius:18px}
+.urn .slot{position:absolute;left:40px;right:40px;top:44px;height:6px;border-radius:3px;background:var(--ink);opacity:.8}
+.urn .paper{position:absolute;left:46px;width:28px;height:40px;border-radius:4px;background:var(--glass-hi);border:1.5px solid var(--ink);top:0;animation:drop 1.1s ease-in infinite}
+@keyframes drop{0%{transform:translateY(-8px);opacity:0}25%{opacity:1}80%{transform:translateY(42px);opacity:1}100%{transform:translateY(48px);opacity:0}}
 
 /* Résultat */
-.bulletin{background:var(--sheet);color:var(--ink);border-radius:4px;box-shadow:var(--shadow);border:1px solid var(--line);padding:30px 20px 24px;text-align:center;
-  display:flex;flex-direction:column;gap:6px;position:relative;overflow:hidden;animation:unfold .6s cubic-bezier(.2,.8,.2,1) both}
-@keyframes unfold{from{transform:rotateX(70deg) translateY(20px);opacity:0}to{transform:none;opacity:1}}
-.bulletin .cap{font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.bulletin .who{font-family:var(--f-display);font-weight:900;font-stretch:70%;text-transform:uppercase;font-size:clamp(34px,10vw,48px);line-height:1;margin-top:8px}
-.bulletin .party{font-size:15px;font-weight:600;color:var(--muted)}
-.bulletin .pct{font-family:var(--f-display);font-weight:900;font-stretch:80%;font-size:64px;line-height:1;margin-top:14px;font-variant-numeric:tabular-nums;color:var(--envelope)}
-.bulletin .pct small{font-size:16px;font-weight:700;color:var(--muted);display:block;letter-spacing:.04em;text-transform:uppercase;margin-top:4px}
-.rank{display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none}
-.rank button{display:grid;grid-template-columns:26px 1fr auto;align-items:center;gap:4px 12px;width:100%;text-align:left;background:none;border:0;
-  border-bottom:1px solid var(--line);padding:12px 2px;cursor:pointer}
-.rank .n{font-family:var(--f-display);font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums}
-.rank .nm{font-weight:700;min-width:0}
-.rank .nm small{display:block;font-weight:500;color:var(--muted);font-size:13px}
-.rank .v{font-family:var(--f-display);font-weight:800;font-size:20px;font-variant-numeric:tabular-nums}
-.rank .meter{grid-column:2/4;height:5px;background:var(--line);border-radius:4px;overflow:hidden}
-.rank .meter i{display:block;height:100%;background:var(--ink);border-radius:4px}
-.rank li:first-child .meter i{background:var(--envelope)}
-.callout{background:var(--envelope-soft);border-radius:14px;padding:14px 16px;font-size:14px}
+.hero{padding:30px 22px 26px;text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center;animation:pop .6s cubic-bezier(.2,.9,.25,1.15) both}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(16px)}to{opacity:1;transform:none}}
+.hero .who{font-family:var(--f-display);font-size:clamp(32px,9.5vw,42px);font-weight:820;letter-spacing:-.03em;line-height:1.05;margin-top:6px;text-wrap:balance}
+.hero .party{font-size:17px;font-weight:600;color:var(--muted)}
+.fam{display:inline-block;font-size:13px;font-weight:650;padding:5px 11px;border-radius:999px;background:var(--hair);color:var(--muted)}
+.big{font-family:var(--f-num);font-weight:800;font-size:76px;line-height:1;letter-spacing:-.03em;margin-top:14px;font-variant-numeric:tabular-nums;color:var(--accent)}
+.big small{font-size:34px}
+.hero .lbl{font-size:15px;font-weight:600;color:var(--muted)}
+.podium{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.podium button{padding:16px;text-align:left;display:flex;flex-direction:column;gap:2px;cursor:pointer;border-radius:var(--r-m)}
+.podium .pl{font-size:13px;font-weight:650;color:var(--faint)}
+.podium .pn{font-weight:700;font-size:16px;line-height:1.25}
+.podium .pv{font-family:var(--f-num);font-weight:780;font-size:24px;margin-top:4px}
+.share-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.share-row .wide{grid-column:1/3}
+.note{padding:16px 18px;border-radius:var(--r-m);font-size:15px;line-height:1.5;color:var(--muted)}
+.duo{padding:20px;display:flex;flex-direction:column;gap:10px}
+.duo .big{font-size:56px;margin:0}
+
+.seg{display:grid;grid-template-columns:repeat(3,1fr);padding:4px;border-radius:999px;gap:4px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:11px 6px;font-weight:650;font-size:15px;cursor:pointer;color:var(--muted)}
+.seg button[aria-selected="true"]{background:var(--glass-hi);color:var(--ink);box-shadow:0 2px 10px -4px var(--shade)}
+.board{padding:6px 18px}
+.rank{list-style:none;margin:0;padding:0}
+.rank li+li{border-top:1px solid var(--hair)}
+.rank button,.rank .rowi{display:grid;grid-template-columns:30px 1fr auto;gap:6px 12px;align-items:center;width:100%;background:none;border:0;padding:16px 0;text-align:left;cursor:pointer}
+.rank .n{font-family:var(--f-num);font-weight:750;color:var(--faint);font-size:16px}
+.rank .nm{font-weight:700;font-size:17px;line-height:1.3;min-width:0}
+.rank .nm small{display:block;font-weight:500;color:var(--muted);font-size:14px;margin-top:1px}
+.rank .v{font-family:var(--f-num);font-weight:780;font-size:21px;font-variant-numeric:tabular-nums}
+.meter{grid-column:2/4;height:7px;background:var(--hair);border-radius:7px;overflow:hidden}
+.meter i{display:block;height:100%;border-radius:7px;background:var(--ink);opacity:.75}
+.rank li:first-child .meter i{background:var(--accent);opacity:1}
+.spectrum{padding:18px;display:flex;flex-direction:column;gap:12px}
+.spec-bar{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;height:46px}
+.spec-bar span{border-radius:10px;background:var(--accent);position:relative}
+.spec-ends{display:flex;justify-content:space-between;font-size:13px;font-weight:650;color:var(--faint)}
 
 /* Détail */
-.panel{background:var(--sheet);border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:12px}
-.thm{display:grid;grid-template-columns:1fr 52px;gap:4px 10px;align-items:center;font-size:14px}
-.thm .meter{grid-column:1/3;height:6px;background:var(--line);border-radius:4px;overflow:hidden}
-.thm .meter i{display:block;height:100%;background:var(--envelope)}
-.thm b{font-variant-numeric:tabular-nums;text-align:right}
-.idea{display:grid;grid-template-columns:14px 1fr;gap:10px;font-size:14px;padding:6px 0;border-bottom:1px solid var(--line)}
-.idea:last-child{border-bottom:0}
-.dot{width:10px;height:10px;border-radius:50%;margin-top:6px}
+.panel{padding:20px;display:flex;flex-direction:column;gap:14px}
+.thm{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;font-size:16px}
+.thm b{font-family:var(--f-num);font-variant-numeric:tabular-nums}
+.thm .meter{grid-column:1/3}
+.thm .meter i{background:var(--accent);opacity:1}
+.idea{display:grid;grid-template-columns:16px 1fr;gap:12px;font-size:16px;line-height:1.45}
+.dot{width:10px;height:10px;border-radius:50%;margin-top:7px}
 .dot.ok{background:var(--yes)} .dot.ko{background:var(--no)}
+.bul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px}
+.bul li{display:grid;grid-template-columns:14px 1fr;gap:10px;font-size:16px;line-height:1.45}
+.bul li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);margin-top:9px}
 
-/* Programmes à l'aveugle */
-.prog{background:var(--sheet);border:1px solid var(--line);border-radius:6px;box-shadow:var(--shadow);padding:20px 18px;display:flex;flex-direction:column;gap:14px}
-.prog .letter{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
-.prog .letter b{font-family:var(--f-display);font-weight:900;font-stretch:70%;font-size:28px;white-space:nowrap;text-transform:uppercase;line-height:1}
-.prog ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
-.prog li{display:grid;grid-template-columns:12px 1fr;gap:10px;font-size:15px;line-height:1.4}
-.prog li::before{content:"";width:6px;height:6px;border-radius:1px;background:var(--ink);margin-top:8px}
+/* Aveugle */
+.prog{padding:22px 20px;display:flex;flex-direction:column;gap:16px}
+.prog .head{display:flex;align-items:center;gap:12px}
+.letter{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;font-family:var(--f-num);font-weight:800;font-size:24px;background:var(--solid);color:var(--on-solid)}
 .rate{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.rate button{border:1.5px solid var(--line);background:transparent;border-radius:12px;padding:12px 4px;font-weight:700;font-size:14px;cursor:pointer;color:var(--muted)}
-.rate button[aria-pressed="true"].r-1{background:var(--no-soft);color:var(--no);border-color:var(--no)}
-.rate button[aria-pressed="true"].r0{background:var(--line);color:var(--ink);border-color:var(--ink)}
-.rate button[aria-pressed="true"].r1{background:var(--yes-soft);color:var(--yes);border-color:var(--yes)}
-.reveal{font-size:14px;color:var(--muted);border-top:1px dashed var(--line);padding-top:12px}
-.reveal strong{color:var(--ink)}
+.rate button{border:1px solid var(--glass-border);background:var(--glass);border-radius:var(--r-s);min-height:50px;font-weight:700;font-size:16px;cursor:pointer;color:var(--muted)}
+.rate button[aria-pressed="true"].r-1{background:var(--no-tint);color:var(--no);border-color:var(--no)}
+.rate button[aria-pressed="true"].r0{background:var(--hair);color:var(--ink);border-color:var(--ink)}
+.rate button[aria-pressed="true"].r1{background:var(--yes-tint);color:var(--yes);border-color:var(--yes)}
+.sticky-cta{position:sticky;bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:4;padding:10px;border-radius:calc(var(--r-m) + 8px)}
 
-.infolist{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
-.infolist li{display:grid;grid-template-columns:auto 1fr;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);align-items:baseline}
-.infolist .d{font-family:var(--f-display);font-weight:850;font-stretch:80%;font-size:20px;font-variant-numeric:tabular-nums;min-width:96px}
-.prose{display:flex;flex-direction:column;gap:12px;font-size:15px}
-.prose h3{margin-top:8px}
-.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);
-  padding:12px 18px;border-radius:999px;font-weight:600;font-size:14px;z-index:20;box-shadow:var(--shadow)}
+/* Infos */
+.cal{padding:6px 20px}
+.cal li{display:grid;grid-template-columns:86px 1fr;gap:14px;padding:16px 0;align-items:baseline}
+.cal li+li{border-top:1px solid var(--hair)}
+.cal .d{font-family:var(--f-num);font-weight:780;font-size:19px}
+.prose{display:flex;flex-direction:column;gap:12px;font-size:16px;line-height:1.6}
+.prose h3{margin-top:10px}
+
+/* Modale */
+.modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:calc(20px + env(safe-area-inset-top,0px)) max(18px,env(safe-area-inset-right,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));
+  background:rgba(7,8,15,.45);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.modal .sheet{width:100%;max-width:420px;padding:18px;display:flex;flex-direction:column;gap:14px;max-height:100%;overflow:auto}
+.modal img{width:100%;border-radius:18px;display:block;aspect-ratio:9/16;object-fit:cover;max-height:58vh;object-fit:contain}
+.toast{position:fixed;left:50%;bottom:calc(26px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:40;padding:13px 20px;border-radius:999px;
+  font-weight:650;font-size:15px;background:var(--solid);color:var(--on-solid);box-shadow:0 12px 30px -10px var(--shade);max-width:calc(100% - 36px);text-align:center}
 </style>
 </head>
 <body>
 
+<div class="sky" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <div class="app">
-  <header class="bar">
-    <button class="brand" id="home-btn" aria-label="Accueil"><i aria-hidden="true"></i>Isoloir</button>
+  <header class="bar glass">
+    <button class="brand" id="home-btn" aria-label="Accueil">
+      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="10" width="18" height="11" rx="3" stroke="currentColor" stroke-width="2"/><rect x="8" y="3" width="8" height="10" rx="1.5" fill="var(--accent)"/><path d="M7 10h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      Isoloir
+    </button>
     <span class="spacer"></span>
-    <button class="iconbtn" id="info-btn">Infos</button>
+    <button class="pill" id="info-btn">Infos</button>
   </header>
   <main id="view"></main>
 </div>
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="modal" hidden></div>
 
 <script src="data.js"></script>
 <script>
 (function(){
-const T = window.ISO_THEMES, C = window.ISO_CANDIDATES, S = window.ISO_STATEMENTS, P = window.ISO_PROGRAMMES;
-const byId = Object.fromEntries(C.map(c=>[c.id,c]));
-const view = document.getElementById('view');
-const store = {
-  get(k){ try{ return JSON.parse(localStorage.getItem('iso27:'+k)); }catch(e){ return null; } },
-  set(k,v){ try{ localStorage.setItem('iso27:'+k, JSON.stringify(v)); }catch(e){} }
-};
-const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const shuffle = a => { a=a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
-const LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const coreCount = S.filter(s=>s.core).length;
+const T=window.ISO_THEMES, C=window.ISO_CANDIDATES, S=window.ISO_STATEMENTS, P=window.ISO_PROGRAMMES, F=window.ISO_FAMILIES;
+const byId=Object.fromEntries(C.map(c=>[c.id,c])), famById=Object.fromEntries(F.map(f=>[f.id,f])), sById=Object.fromEntries(S.map(s=>[s.id,s]));
+const view=document.getElementById('view');
+const store={ get(k){try{return JSON.parse(localStorage.getItem('iso27:'+k))}catch(e){return null}}, set(k,v){try{localStorage.setItem('iso27:'+k,JSON.stringify(v))}catch(e){}}, del(k){try{localStorage.removeItem('iso27:'+k)}catch(e){}} };
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const LET="ABCDEFGHIJKLMNOP";
+const CORE=S.filter(s=>s.core).length;
+const BASE=location.href.split('#')[0];
+const isPages=/github\.io$/.test(location.hostname);
 
-let state = { mode:null, queue:[], i:0, answers:{}, important:{}, priorities:[] };
+let state=null;
+let friend=null;
 
-function toast(msg){ const t=document.getElementById('toast'); t.textContent=msg; t.hidden=false; clearTimeout(toast._t); toast._t=setTimeout(()=>t.hidden=true,2200); }
-function go(html){ view.innerHTML = '<section class="screen">'+html+'</section>'; window.scrollTo(0,0); }
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(()=>t.hidden=true,2600)}
+function go(html){view.innerHTML='<section class="screen">'+html+'</section>';window.scrollTo(0,0)}
+function haptic(){try{navigator.vibrate&&navigator.vibrate(8)}catch(e){}}
+function daysLeft(){const d=new Date(window.ISO_ROUND1+'T08:00:00');return Math.max(0,Math.ceil((d-new Date())/864e5))}
 
-/* ---------- Accueil ---------- */
+/* ----- Défi entre amis : réponses encodées dans le lien ----- */
+function encode(ans){let s=S.map(x=>ans[x.id]===1?'a':ans[x.id]===-1?'b':'0').join('');return s.replace(/0+$/,'')}
+function decode(code){const a={};[...code].forEach((ch,i)=>{if(S[i]){if(ch==='a')a[S[i].id]=1;else if(ch==='b')a[S[i].id]=-1}});return a}
+function readHash(){
+  const m=location.hash.match(/^#d=([ab0]{1,200})\.([a-z]{1,4})$/);
+  if(m&&byId[m[2]]){friend={answers:decode(m[1]),top:m[2]};store.set('friend',friend);history.replaceState(null,'',BASE)}
+  else friend=store.get('friend');
+}
+
+/* ----- Accueil ----- */
 function home(){
-  const last = store.get('last');
+  const last=store.get('last'), prog=store.get('progress'), d=daysLeft();
   go(`
-    <div class="stack" style="gap:14px;margin-top:8px">
-      <span class="eyebrow">Présidentielle · 18 avril et 2 mai 2027</span>
+    <span class="chip-info glass">${d>0?`<b>J-${d}</b> avant le premier tour`:`Présidentielle 2027`}</span>
+    <div class="stack" style="gap:14px">
       <h1>Choisis des idées, pas des noms.</h1>
-      <p class="lead">Des propositions réelles des candidats, sans nom ni parti. Tu tranches, on révèle à la fin de qui tu es le plus proche.</p>
+      <p class="lead">Lis de vraies propositions de candidats, sans savoir de qui elles viennent. À la fin, on lève le rideau.</p>
     </div>
+    ${friend?`<button class="banner glass" data-go="express"><div><b>Un ami t'a lancé un défi</b><span>Fais le test pour voir si vous pensez pareil.</span></div><span class="go">Relever</span></button>`:''}
+    ${prog?`<button class="banner glass" data-go="resume"><div><b>Reprendre ton test</b><span>Idée ${prog.i+1} sur ${prog.ids.length}</span></div><span class="go">Continuer</span></button>`:''}
     <div class="stack">
-      <button class="mode primary" data-go="express"><b>Test express</b><span>Les idées qui départagent le plus</span><em>${coreCount} idées</em></button>
-      <button class="mode" data-go="full"><b>Test complet</b><span>Toutes les propositions, thème par thème</span><em>${S.length} idées</em></button>
-      <button class="mode" data-go="blind"><b>Programmes à l'aveugle</b><span>16 programmes résumés, identité cachée jusqu'au bout</span><em>16</em></button>
+      <button class="mode main" data-go="express"><b>Test express</b><span>Les idées qui départagent le plus les candidats</span><em><strong>${CORE}</strong>idées · 4 min</em></button>
+      <button class="mode glass" data-go="full"><b>Test complet</b><span>Toutes les propositions, pour un résultat plus précis</span><em><strong>${S.length}</strong>idées · 10 min</em></button>
+      <button class="mode glass" data-go="blind"><b>Programmes à l'aveugle</b><span>Lis 16 programmes résumés, note-les, découvre qui est qui</span><em><strong>16</strong>programmes</em></button>
     </div>
-    ${last ? `<button class="btn ghost" data-go="last">Revoir mon dernier résultat <small>${esc(byId[last.top]?.name||'')}</small></button>`:''}
-    <ol class="steps">
-      <li>Tu lis une proposition anonyme et tu dis d'accord, pas d'accord, ou sans avis.</li>
-      <li>Tu peux marquer une idée « importante pour moi » : elle compte double.</li>
-      <li>On compare tes réponses aux positions connues de chaque candidat et on lève le rideau.</li>
-    </ol>
-    <p class="notice">Outil indépendant, sans lien avec un parti. Positions à jour au ${window.ISO_UPDATED}, selon les programmes et déclarations publiés. Tes réponses restent sur ton téléphone. <button class="linkbtn" data-go="method">Voir la méthode</button></p>
+    ${last?`<button class="banner glass" data-go="last"><div><b>Ton dernier résultat</b><span>${esc(byId[last.top]?.name||'')}</span></div><span class="go">Revoir</span></button>`:''}
+    <div class="how glass">
+      <h3>Comment ça marche</h3>
+      <ol>
+        <li>Une idée s'affiche, sans nom ni parti. Tu dis d'accord ou pas d'accord. Un mot te bloque ? Touche « C'est quoi ? ».</li>
+        <li>Coche « Important pour moi » sur les sujets qui comptent : ils pèsent double.</li>
+        <li>On compare tes réponses aux positions des 16 candidats et on révèle ton classement.</li>
+      </ol>
+    </div>
+    <p class="foot">Outil indépendant et neutre. Positions à jour au ${window.ISO_UPDATED}.<br>Tes réponses restent sur ton téléphone. <button class="linkbtn" data-go="method">Voir la méthode</button></p>
   `);
 }
 
-/* ---------- Priorités ---------- */
+/* ----- Priorités ----- */
 function priorities(mode){
-  state = { mode, queue:[], i:0, answers:{}, important:{}, priorities:[] };
   go(`
-    <div class="stack" style="gap:10px">
+    <div class="stack" style="gap:12px">
       <span class="eyebrow">Avant de commencer</span>
       <h2>Qu'est-ce qui compte le plus pour toi ?</h2>
-      <p class="small">Choisis jusqu'à 3 thèmes. Ils pèseront un peu plus dans le résultat. Tu peux aussi passer.</p>
+      <p class="small">Choisis jusqu'à 3 sujets. Ils compteront un peu plus dans ton résultat. Tu peux aussi passer cette étape.</p>
     </div>
-    <div class="chips" id="chips">
-      ${Object.entries(T).map(([k,v])=>`<button class="chip" aria-pressed="false" data-k="${k}">${esc(v)}</button>`).join('')}
-    </div>
-    <span class="spacer" style="flex:1"></span>
-    <button class="btn" id="start">Entrer dans l'isoloir</button>
+    <div class="chips">${Object.entries(T).map(([k,v])=>`<button class="chip" aria-pressed="false" data-k="${k}">${esc(v)}</button>`).join('')}</div>
+    <button class="btn accent" id="start" style="margin-top:8px">C'est parti</button>
   `);
-  view.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{
-    const on=b.getAttribute('aria-pressed')==='true', sel=view.querySelectorAll('.chip[aria-pressed="true"]').length;
-    if(!on && sel>=3){ toast('3 thèmes maximum'); return; }
-    b.setAttribute('aria-pressed', String(!on));
-  });
+  view.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{const on=b.getAttribute('aria-pressed')==='true';
+    if(!on&&view.querySelectorAll('.chip[aria-pressed="true"]').length>=3){toast('3 sujets maximum');return}
+    b.setAttribute('aria-pressed',String(!on));haptic()});
   document.getElementById('start').onclick=()=>{
-    state.priorities=[...view.querySelectorAll('.chip[aria-pressed="true"]')].map(b=>b.dataset.k);
-    const pool = mode==='express' ? S.filter(s=>s.core) : S;
-    const themes = shuffle(Object.keys(T));
-    state.queue = themes.flatMap(t=>shuffle(pool.filter(s=>s.t===t)));
-    state.i=0; card();
+    const pr=[...view.querySelectorAll('.chip[aria-pressed="true"]')].map(b=>b.dataset.k);
+    const pool=mode==='express'?S.filter(s=>s.core):S;
+    const ids=shuffle(Object.keys(T)).flatMap(t=>shuffle(pool.filter(s=>s.t===t)).map(s=>s.id));
+    state={mode,ids,i:0,answers:{},important:{},priorities:pr};save();card();
   };
 }
+function save(){store.set('progress',state)}
 
-/* ---------- Carte ---------- */
+/* ----- Carte ----- */
 function card(){
-  if(state.i>=state.queue.length){ return counting(); }
-  const s=state.queue[state.i], next=state.queue[state.i+1], n=state.queue.length;
+  if(state.i>=state.ids.length)return counting();
+  const s=sById[state.ids[state.i]], nx=sById[state.ids[state.i+1]], n=state.ids.length;
   go(`
-    <div class="progress"><div class="track"><i style="width:${(state.i/n*100).toFixed(1)}%"></i></div><span class="count">${state.i+1} / ${n}</span></div>
-    <div class="deck" id="deck">
-      ${next?`<div class="ballot under" aria-hidden="true"><span class="theme">${esc(T[next.t])}</span><div class="q">${esc(next.text)}</div></div>`:''}
-      <article class="ballot" id="ballot" aria-live="polite">
+    <div class="progress"><div class="track"><i style="width:${(state.i/n*100).toFixed(1)}%"></i></div><span class="count">${state.i+1}/${n}</span></div>
+    <div class="deck">
+      ${nx?`<div class="ballot glass under" aria-hidden="true"></div>`:''}
+      <article class="ballot glass hi" id="ballot">
         <span class="stamp yes">D'accord</span><span class="stamp no">Pas d'accord</span>
-        <span class="theme">${esc(T[s.t])}</span>
+        <span class="tag">${esc(T[s.t])}</span>
         <div class="q">${esc(s.text)}</div>
-        <div class="ref"><span>Proposition n° ${state.i+1}</span><span>Auteur masqué</span></div>
+        ${s.help?`<button class="help-btn" id="hb">C'est quoi ?</button><p class="help-txt" id="ht" hidden>${esc(s.help)}</p>`:''}
       </article>
     </div>
-    <button class="weight" id="imp" aria-pressed="${state.important[s.id]?'true':'false'}"><span class="box"></span>Important pour moi, compte double</button>
+    ${state.i===0?'<p class="hint">Glisse la carte à droite pour « d\'accord », à gauche pour « pas d\'accord ».</p>':''}
+    <button class="weight" id="imp" aria-pressed="${state.important[s.id]?'true':'false'}"><span class="box"></span>Important pour moi</button>
     <div class="vote">
       <button class="no" data-v="-1">Pas d'accord</button>
-      <button class="skip" data-v="0">Sans avis</button>
       <button class="yes" data-v="1">D'accord</button>
+      <button class="skip" data-v="0">Je ne sais pas</button>
     </div>
     <div class="under-actions">
-      <button class="linkbtn" id="back" ${state.i===0?'disabled':''}>Revenir en arrière</button>
-      <button class="linkbtn" id="finish">${state.i>=8?'Voir mon résultat':'Arrêter'}</button>
+      <button class="linkbtn muted" id="back" ${state.i===0?'disabled':''}>Retour</button>
+      <button class="linkbtn" id="finish">${Object.values(state.answers).filter(v=>v).length>=8?'Voir mon résultat':'Quitter'}</button>
     </div>
   `);
-  const ballot=document.getElementById('ballot');
-  document.getElementById('imp').onclick=e=>{ const b=e.currentTarget, on=b.getAttribute('aria-pressed')!=='true'; b.setAttribute('aria-pressed',String(on)); state.important[s.id]=on; };
+  const hb=document.getElementById('hb'); if(hb)hb.onclick=e=>{e.stopPropagation();const t=document.getElementById('ht');t.hidden=!t.hidden;hb.textContent=t.hidden?"C'est quoi ?":'Masquer'};
+  document.getElementById('imp').onclick=e=>{const b=e.currentTarget,on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',String(on));state.important[s.id]=on;save();haptic()};
   view.querySelectorAll('.vote button').forEach(b=>b.onclick=()=>answer(+b.dataset.v));
-  document.getElementById('back').onclick=()=>{ if(state.i>0){ state.i--; card(); } };
-  document.getElementById('finish').onclick=()=>{ if(Object.values(state.answers).filter(v=>v!==0).length<3){ home(); } else counting(); };
-  swipe(ballot);
+  document.getElementById('back').onclick=()=>{if(state.i>0){state.i--;save();card()}};
+  document.getElementById('finish').onclick=()=>{if(Object.values(state.answers).filter(v=>v).length>=3)counting();else home()};
+  swipe(document.getElementById('ballot'));
 }
-function answer(v,dir){
-  const s=state.queue[state.i]; state.answers[s.id]=v;
+function answer(v){
+  state.answers[state.ids[state.i]]=v; haptic();
   const b=document.getElementById('ballot');
-  if(b){ const x = v===1?1:v===-1?-1:0; b.style.transform=`translate(${x*120}%, ${x?0:-30}px) rotate(${x*14}deg)`; b.style.opacity='0'; }
-  if(navigator.vibrate) try{navigator.vibrate(8)}catch(e){}
-  setTimeout(()=>{ state.i++; card(); }, 200);
+  if(b){b.style.transform=v?`translateX(${v*125}%) rotate(${v*12}deg)`:'translateY(-40px) scale(.96)';b.style.opacity='0'}
+  setTimeout(()=>{state.i++;save();card()},220);
 }
 function swipe(el){
-  let x0=null,y0=0,dx=0,id=null; const yes=el.querySelector('.stamp.yes'), no=el.querySelector('.stamp.no');
-  el.addEventListener('pointerdown',e=>{ x0=e.clientX;y0=e.clientY;dx=0;id=e.pointerId;el.style.transition='none'; });
-  el.addEventListener('pointermove',e=>{ if(x0===null||e.pointerId!==id)return; dx=e.clientX-x0; const dy=e.clientY-y0;
-    if(Math.abs(dx)<8 && Math.abs(dy)>Math.abs(dx)) return;
-    try{el.setPointerCapture(id)}catch(_){}
-    el.style.transform=`translateX(${dx}px) rotate(${dx/18}deg)`;
-    yes.style.opacity=Math.max(0,Math.min(1,dx/90)); no.style.opacity=Math.max(0,Math.min(1,-dx/90)); });
-  const end=()=>{ if(x0===null)return; el.style.transition=''; x0=null;
-    if(dx>90) return answer(1); if(dx<-90) return answer(-1);
-    el.style.transform=''; yes.style.opacity=0; no.style.opacity=0; };
-  el.addEventListener('pointerup',end); el.addEventListener('pointercancel',end);
+  let x0=null,y0=0,dx=0,id=null,drag=false;const yes=el.querySelector('.stamp.yes'),no=el.querySelector('.stamp.no');
+  el.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;x0=e.clientX;y0=e.clientY;dx=0;id=e.pointerId;drag=false});
+  el.addEventListener('pointermove',e=>{if(x0===null||e.pointerId!==id)return;dx=e.clientX-x0;const dy=e.clientY-y0;
+    if(!drag){if(Math.abs(dx)<10)return;if(Math.abs(dy)>Math.abs(dx)){x0=null;return}drag=true;el.style.transition='none';try{el.setPointerCapture(id)}catch(_){}}
+    el.style.transform=`translateX(${dx}px) rotate(${dx/20}deg)`;yes.style.opacity=Math.max(0,Math.min(1,dx/90));no.style.opacity=Math.max(0,Math.min(1,-dx/90))});
+  const end=()=>{if(x0===null)return;x0=null;if(!drag)return;el.style.transition='';
+    if(dx>90)return answer(1);if(dx<-90)return answer(-1);el.style.transform='';yes.style.opacity=0;no.style.opacity=0};
+  el.addEventListener('pointerup',end);el.addEventListener('pointercancel',end);
 }
 
-/* ---------- Calcul ---------- */
-function compute(answers, important, prios){
-  const res = C.map(c=>{
-    let sc=0,max=0,n=0; const th={}; const agree=[],disagree=[];
-    for(const s of S){
-      const u=answers[s.id]; const p=s.pos[c.id];
-      if(!u || p===undefined) continue;
-      const w=(important[s.id]?2:1)*(prios.includes(s.t)?1.5:1);
-      sc+=w*u*p; max+=w*Math.abs(p); n++;
-      th[s.t]=th[s.t]||{sc:0,max:0}; th[s.t].sc+=w*u*p; th[s.t].max+=w*Math.abs(p);
-      (u*p>0?agree:disagree).push(s.id);
-    }
-    const pct = max>0 ? Math.round(50+50*sc/(max+4)) : null;
-    return { id:c.id, pct, n, th, agree, disagree, r:Math.random() };
-  });
-  return res.sort((a,b)=>(b.pct??-1)-(a.pct??-1) || b.n-a.n || a.r-b.r);
+/* ----- Calcul ----- */
+function compute(answers,important,prios){
+  return C.map(c=>{
+    let sc=0,max=0,n=0;const th={},agree=[],disagree=[];
+    for(const s of S){const u=answers[s.id],p=s.pos[c.id];if(!u||p===undefined)continue;
+      const w=(important[s.id]?2:1)*(prios.includes(s.t)?1.5:1);sc+=w*u*p;max+=w*Math.abs(p);n++;
+      th[s.t]=th[s.t]||{sc:0,max:0};th[s.t].sc+=w*u*p;th[s.t].max+=w*Math.abs(p);(u*p>0?agree:disagree).push(s.id)}
+    return{id:c.id,pct:max>0?Math.round(50+50*sc/(max+4)):null,n,th,agree,disagree,r:Math.random()};
+  }).sort((a,b)=>(b.pct??-1)-(a.pct??-1)||b.n-a.n||a.r-b.r);
 }
 function counting(){
-  go(`<div class="count-screen"><div class="stack" style="gap:18px;align-items:center">
-    <div class="urn" aria-hidden="true"><div class="body"></div><div class="slot"></div><div class="paper"></div></div>
-    <h2>Dépouillement…</h2><p class="small">On compare tes ${Object.values(state.answers).filter(v=>v!==0).length} réponses aux positions des 16 candidats.</p></div></div>`);
-  const rm = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  setTimeout(()=>{
-    const res=compute(state.answers,state.important,state.priorities);
-    const saved={ answers:state.answers, important:state.important, priorities:state.priorities, top:res[0].id, at:Date.now() };
-    store.set('last',saved);
-    results(saved);
-  }, rm?200:1600);
+  const nAns=Object.values(state.answers).filter(v=>v).length;
+  go(`<div class="counting"><div class="stack" style="align-items:center;gap:16px">
+    <div class="urn" aria-hidden="true"><div class="body glass"></div><div class="slot"></div><div class="paper"></div></div>
+    <h2>Dépouillement…</h2><p class="small">On compare tes ${nAns} réponses aux positions des 16 candidats.</p></div></div>`);
+  const saved={answers:state.answers,important:state.important,priorities:state.priorities,at:Date.now()};
+  saved.top=compute(saved.answers,saved.important,saved.priorities)[0].id;
+  store.set('last',saved);store.del('progress');
+  setTimeout(()=>results(saved),matchMedia('(prefers-reduced-motion: reduce)').matches?150:1700);
 }
 
-/* ---------- Résultat ---------- */
+/* ----- Classements (candidats, partis, familles) ----- */
+function famScores(list){
+  return F.map(f=>{const m=list.filter(r=>byId[r.id].fam===f.id&&r.pct!==null);
+    return{id:f.id,pct:m.length?Math.round(m.reduce((a,r)=>a+r.pct,0)/m.length):null,members:list.filter(r=>byId[r.id].fam===f.id).map(r=>r.id)}});
+}
+function boards(list,unit){
+  const fams=famScores(list), famSorted=fams.slice().sort((a,b)=>(b.pct??-1)-(a.pct??-1));
+  const valid=fams.map(f=>f.pct??0), mn=Math.min(...valid), mx=Math.max(...valid);
+  const row=(k,main,sub,pct,attr)=>`<li><${attr?'button '+attr:'div class="rowi"'}><span class="n">${k}</span><span class="nm">${main}<small>${sub}</small></span><span class="v">${pct===null?'–':pct+'%'}</span><span class="meter"><i style="width:${pct??0}%"></i></span></${attr?'button':'div'}></li>`;
+  return `
+  <div class="seg glass" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="cand">Candidats</button>
+    <button role="tab" aria-selected="false" data-tab="party">Partis</button>
+    <button role="tab" aria-selected="false" data-tab="fam">Familles</button>
+  </div>
+  <div data-pane="cand" class="board glass"><ol class="rank">${list.map((r,k)=>row(k+1,esc(byId[r.id].name),esc(byId[r.id].party)+(unit?` · ${unit(r)}`:''),r.pct,`data-detail="${r.id}"`)).join('')}</ol></div>
+  <div data-pane="party" class="board glass" hidden><ol class="rank">${list.map((r,k)=>row(k+1,esc(byId[r.id].party),esc(byId[r.id].name)+' · '+esc(famById[byId[r.id].fam].name),r.pct,`data-detail="${r.id}"`)).join('')}</ol></div>
+  <div data-pane="fam" hidden class="stack">
+    <div class="spectrum glass">
+      <h3>Où tu te situes</h3>
+      <div class="spec-bar">${fams.map(f=>{const o=f.pct===null?.06:.12+.88*((f.pct-mn)/Math.max(1,mx-mn));return`<span title="${esc(famById[f.id].name)}" style="opacity:${o.toFixed(2)}"></span>`}).join('')}</div>
+      <div class="spec-ends"><span>Gauche</span><span>Centre</span><span>Droite</span></div>
+      <p class="tiny">Plus la case est foncée, plus tu es proche de cette famille politique.</p>
+    </div>
+    <div class="board glass"><ol class="rank">${famSorted.map((f,k)=>row(k+1,esc(famById[f.id].name),f.members.map(id=>esc(byId[id].name)).join(', '),f.pct,null)).join('')}</ol></div>
+    <p class="tiny" style="padding:0 6px">Regroupement indicatif, inspiré de celui utilisé par la presse. Les partis peuvent le contester.</p>
+  </div>`;
+}
+function wireBoards(onDetail){
+  view.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>{view.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',String(x===b)));
+    view.querySelectorAll('[data-pane]').forEach(p=>p.hidden=p.dataset.pane!==b.dataset.tab);haptic()});
+  if(onDetail)view.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>onDetail(b.dataset.detail));
+}
+
+/* ----- Résultat ----- */
 function results(saved){
   const res=compute(saved.answers,saved.important||{},saved.priorities||[]);
-  const top=res[0], c=byId[top.id];
-  const answered=Object.values(saved.answers).filter(v=>v!==0).length;
+  const top=res[0],c=byId[top.id],nAns=Object.values(saved.answers).filter(v=>v).length;
+  let duo='';
+  if(friend){const common=S.filter(s=>saved.answers[s.id]&&friend.answers[s.id]);const same=common.filter(s=>saved.answers[s.id]===friend.answers[s.id]).length;
+    if(common.length>=3){const p=Math.round(same/common.length*100);
+      duo=`<div class="duo glass"><span class="eyebrow">Ton ami et toi</span><div class="big">${p}<small>%</small></div><p class="small">d'accord sur les ${common.length} idées que vous avez tous les deux tranchées. Son programme le plus proche : <strong>${esc(byId[friend.top].name)}</strong>.</p></div>`}}
   go(`
-    <span class="eyebrow" style="text-align:center">Le programme le plus proche de tes réponses</span>
-    <div class="bulletin" role="img" aria-label="${esc(c.name)}, ${esc(c.party)}, ${top.pct}% de proximité">
-      <span class="cap">Élection présidentielle 2027</span>
+    <span class="eyebrow" style="text-align:center">Le programme le plus proche de toi</span>
+    <div class="hero glass hi">
+      <span class="fam">${esc(famById[c.fam].name)}</span>
       <div class="who">${esc(c.name)}</div>
       <div class="party">${esc(c.party)}</div>
-      <div class="pct">${top.pct}%<small>de proximité</small></div>
+      <div class="big">${top.pct}<small>%</small></div>
+      <div class="lbl">de proximité</div>
     </div>
-    <div class="row">
-      <button class="btn" id="share">Partager</button>
-      <button class="btn ghost" data-detail="${top.id}">Pourquoi ?</button>
+    <div class="podium">${res.slice(1,3).map((r,k)=>`<button class="glass" data-detail="${r.id}"><span class="pl">${k+2}e</span><span class="pn">${esc(byId[r.id].name)}</span><span class="tiny">${esc(byId[r.id].party)}</span><span class="pv">${r.pct}%</span></button>`).join('')}</div>
+    <div class="share-row">
+      <button class="btn accent wide" id="story">Partager en story</button>
+      <button class="btn glass" id="dare">Défier un ami</button>
+      <button class="btn glass" data-detail="${top.id}">Pourquoi ?</button>
     </div>
-    <p class="callout">Ce score mesure seulement ta proximité avec les positions connues de chaque candidat, sur ${answered} idées tranchées. Le choix final t'appartient : compare, lis les programmes complets, et vote.</p>
-    <div class="stack" style="gap:6px">
-      <h3>Classement complet</h3>
-      <p class="small">Touche un nom pour voir le détail par thème.</p>
-    </div>
-    <ol class="rank">
-      ${res.map((r,k)=>`<li><button data-detail="${r.id}">
-        <span class="n">${k+1}</span>
-        <span class="nm">${esc(byId[r.id].name)}<small>${esc(byId[r.id].party)} · ${r.n} idée${r.n>1?'s':''} comparée${r.n>1?'s':''}</small></span>
-        <span class="v">${r.pct===null?'–':r.pct+'%'}</span>
-        <span class="meter"><i style="width:${r.pct??0}%"></i></span></button></li>`).join('')}
-    </ol>
+    ${duo}
+    <p class="note glass">Ce score montre seulement à quel point tes réponses ressemblent aux positions connues de chaque candidat, sur ${nAns} idées. Ce n'est pas une consigne de vote : lis les programmes complets et fais ton choix.</p>
+    <div class="stack" style="gap:6px"><h2>Le classement</h2><p class="small">Par candidat, par parti ou par famille politique. Touche un nom pour voir le détail.</p></div>
+    ${boards(res,r=>`${r.n} idée${r.n>1?'s':''}`)}
     <div class="stack">
-      <button class="btn ghost" data-go="blind">Tester les programmes à l'aveugle</button>
-      <button class="btn ghost" data-go="${answered<S.length-5?'full':'home'}">${answered<S.length-5?'Affiner avec le test complet':'Retour à l\'accueil'}</button>
+      <button class="btn glass" data-go="blind">Tester les programmes à l'aveugle</button>
+      ${nAns<S.length-10?'<button class="btn glass" data-go="full">Affiner avec le test complet</button>':''}
     </div>
   `);
-  view.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>detail(b.dataset.detail,saved));
-  document.getElementById('share').onclick=()=>share(c,top.pct);
+  wireBoards(id=>detail(id,saved));
+  view.querySelectorAll('.podium [data-detail],.share-row [data-detail]').forEach(b=>b.onclick=()=>detail(b.dataset.detail,saved));
+  document.getElementById('story').onclick=()=>storyModal(res);
+  document.getElementById('dare').onclick=()=>dare(saved);
 }
-function share(c,pct){
-  const url = location.href.split('#')[0];
-  const text = `Sur Isoloir 2027, le programme le plus proche de mes idées est celui de ${c.name} (${pct} %). Et toi ? Fais le test à l'aveugle :`;
-  if(navigator.share){ navigator.share({title:'Isoloir 2027',text,url}).catch(()=>{}); return; }
-  const full=text+' '+url;
-  if(navigator.clipboard){ navigator.clipboard.writeText(full).then(()=>toast('Texte copié, colle-le où tu veux')).catch(()=>toast(full)); }
-  else toast(full);
+function dare(saved){
+  const url=BASE+'#d='+encode(saved.answers)+'.'+saved.top;
+  const text="J'ai fait le test Isoloir 2027 à l'aveugle. Fais-le et on compare nos idées :";
+  if(navigator.share){navigator.share({title:'Isoloir 2027',text,url}).catch(()=>{});return}
+  copy(text+' '+url,'Lien du défi copié, envoie-le à un ami');
 }
-function detail(id,saved){
-  const res=compute(saved.answers,saved.important||{},saved.priorities||[]);
-  const r=res.find(x=>x.id===id), c=byId[id];
-  const sMap=Object.fromEntries(S.map(s=>[s.id,s]));
-  const themes=Object.keys(T).filter(t=>r.th[t]&&r.th[t].max>0).map(t=>({t,p:Math.round(50+50*r.th[t].sc/r.th[t].max)})).sort((a,b)=>b.p-a.p);
-  go(`
-    <button class="linkbtn" id="back" style="align-self:flex-start">Retour au classement</button>
-    <div class="stack" style="gap:6px">
-      <span class="eyebrow">${esc(c.party)}</span>
-      <h2>${esc(c.name)}</h2>
-      <p class="small">${r.pct===null?'Pas assez de positions comparables.':`${r.pct} % de proximité sur ${r.n} idées comparées.`}</p>
-    </div>
-    ${themes.length?`<div class="panel"><h3>Par thème</h3>${themes.map(x=>`<div class="thm"><span>${esc(T[x.t])}</span><b>${x.p}%</b><span class="meter"><i style="width:${x.p}%"></i></span></div>`).join('')}</div>`:''}
-    ${r.agree.length?`<div class="panel"><h3>Vous êtes d'accord sur</h3>${r.agree.map(i=>`<div class="idea"><span class="dot ok"></span><span>${esc(sMap[i].text)}</span></div>`).join('')}</div>`:''}
-    ${r.disagree.length?`<div class="panel"><h3>Vous divergez sur</h3>${r.disagree.map(i=>`<div class="idea"><span class="dot ko"></span><span>${esc(sMap[i].text)}</span></div>`).join('')}</div>`:''}
-    <div class="panel"><h3>Son programme en bref</h3><div class="prog" style="box-shadow:none;border:0;padding:0"><ul>${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div></div>
-  `);
-  document.getElementById('back').onclick=()=>results(saved);
+function copy(t,msg){if(navigator.clipboard)navigator.clipboard.writeText(t).then(()=>toast(msg)).catch(()=>toast(t));else toast(t)}
+
+/* ----- Image story ----- */
+function drawStory(res){
+  const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const g=cv.getContext('2d');
+  const dark=matchMedia('(prefers-color-scheme: dark)').matches&&document.documentElement.dataset.theme!=='light';
+  g.fillStyle=dark?'#07080F':'#EEF0F6';g.fillRect(0,0,W,H);
+  const blobs=dark?[['#3E3393',150,260],['#0E4D70',980,700],['#6E2C3B',120,1700],['#12584A',950,1650]]:[['#C9C2FF',150,260],['#B4E1FF',980,700],['#FFD6C4',120,1700],['#C6F0DF',950,1650]];
+  blobs.forEach(([col,x,y])=>{const gr=g.createRadialGradient(x,y,0,x,y,700);gr.addColorStop(0,col);gr.addColorStop(1,col+'00');g.fillStyle=gr;g.fillRect(0,0,W,H)});
+  const ink=dark?'#F2F3F8':'#0F1222',muted=dark?'#B0B5CA':'#4B5068',acc=dark?'#9C98FF':'#4C47E0';
+  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()};
+  const font=(w,s)=>`${w} ${s}px -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif`;
+  g.textAlign='center';
+  g.fillStyle=muted;g.font=font(700,40);g.fillText('ISOLOIR 2027',W/2,190);
+  g.fillStyle=ink;g.font=font(800,74);g.fillText('Mon programme',W/2,330);g.fillText('le plus proche',W/2,420);
+  rr(90,500,900,760,64);g.fillStyle=dark?'rgba(255,255,255,0.10)':'rgba(255,255,255,0.72)';g.fill();g.strokeStyle=dark?'rgba(255,255,255,0.2)':'rgba(255,255,255,0.95)';g.lineWidth=3;g.stroke();
+  const c=byId[res[0].id];
+  g.fillStyle=muted;g.font=font(650,38);g.fillText(famById[c.fam].name,W/2,600);
+  let size=96;g.font=font(850,size);while(g.measureText(c.name).width>800&&size>56){size-=4;g.font=font(850,size)}
+  g.fillStyle=ink;g.fillText(c.name,W/2,740);
+  g.fillStyle=muted;g.font=font(600,42);g.fillText(c.party,W/2,810);
+  g.fillStyle=acc;g.font=`800 220px ui-rounded, "SF Pro Rounded", -apple-system, system-ui, sans-serif`;g.fillText(res[0].pct+'%',W/2,1090);
+  g.fillStyle=muted;g.font=font(600,40);g.fillText('de proximité',W/2,1170);
+  g.textAlign='left';
+  res.slice(1,4).forEach((r,k)=>{const y=1340+k*120;rr(90,y,900,96,32);g.fillStyle=dark?'rgba(255,255,255,0.07)':'rgba(255,255,255,0.55)';g.fill();
+    g.fillStyle=muted;g.font=font(750,38);g.fillText((k+2)+'',130,y+62);g.fillStyle=ink;g.font=font(700,40);g.fillText(byId[r.id].name,190,y+62);
+    g.textAlign='right';g.font=font(800,42);g.fillText(r.pct+'%',950,y+64);g.textAlign='left'});
+  g.textAlign='center';g.fillStyle=ink;g.font=font(750,44);g.fillText('Et toi ? Fais le test à l\'aveugle',W/2,1760);
+  g.fillStyle=acc;g.font=font(650,38);g.fillText(isPages?location.host+location.pathname.replace(/index\.html$/,''):'sucrayyyy.github.io/Isoloir-2027',W/2,1825);
+  return cv;
+}
+function storyModal(res){
+  const cv=drawStory(res),url=cv.toDataURL('image/png'),m=document.getElementById('modal');let file=null;
+  cv.toBlob(b=>{if(b)file=new File([b],'isoloir-2027.png',{type:'image/png'})},'image/png');
+  m.innerHTML=`<div class="sheet glass hi"><img src="${url}" alt="Image de ton résultat à partager"><button class="btn accent" id="sh">Partager l'image</button><p class="tiny" style="text-align:center">Ou appuie longuement sur l'image pour l'enregistrer.</p><button class="btn glass" id="cl">Fermer</button></div>`;
+  m.hidden=false;
+  document.getElementById('cl').onclick=()=>{m.hidden=true;m.innerHTML=''};
+  m.onclick=e=>{if(e.target===m){m.hidden=true;m.innerHTML=''}};
+  document.getElementById('sh').onclick=()=>{
+    if(file&&navigator.canShare&&navigator.canShare({files:[file]})){navigator.share({files:[file],title:'Isoloir 2027'}).catch(()=>{})}
+    else toast("Appuie longuement sur l'image pour l'enregistrer");
+  };
 }
 
-/* ---------- Programmes à l'aveugle ---------- */
+/* ----- Détail candidat ----- */
+function detail(id,saved){
+  const r=compute(saved.answers,saved.important||{},saved.priorities||[]).find(x=>x.id===id),c=byId[id];
+  const th=Object.keys(T).filter(t=>r.th[t]&&r.th[t].max>0).map(t=>({t,p:Math.round(50+50*r.th[t].sc/r.th[t].max)})).sort((a,b)=>b.p-a.p);
+  go(`
+    <button class="linkbtn" id="bk" style="align-self:flex-start">Retour au classement</button>
+    <div class="stack" style="gap:8px"><span class="fam" style="align-self:flex-start">${esc(famById[c.fam].name)}</span><h2>${esc(c.name)}</h2><p class="small">${esc(c.party)}</p></div>
+    <div class="hero glass hi" style="padding:22px"><div class="big" style="margin:0">${r.pct===null?'–':r.pct+'<small>%</small>'}</div><div class="lbl">${r.pct===null?'Pas assez d\'idées en commun pour comparer':`de proximité, sur ${r.n} idées comparées`}</div></div>
+    ${th.length?`<div class="panel glass"><h3>Sujet par sujet</h3>${th.map(x=>`<div class="thm"><span>${esc(T[x.t])}</span><b>${x.p}%</b><span class="meter"><i style="width:${x.p}%"></i></span></div>`).join('')}</div>`:''}
+    ${r.agree.length?`<div class="panel glass"><h3>Vous êtes d'accord</h3>${r.agree.map(i=>`<div class="idea"><span class="dot ok"></span><span>${esc(sById[i].text)}</span></div>`).join('')}</div>`:''}
+    ${r.disagree.length?`<div class="panel glass"><h3>Vous n'êtes pas d'accord</h3>${r.disagree.map(i=>`<div class="idea"><span class="dot ko"></span><span>${esc(sById[i].text)}</span></div>`).join('')}</div>`:''}
+    <div class="panel glass"><h3>Son programme en bref</h3><ul class="bul">${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul></div>
+    <button class="btn glass" id="bk2">Retour au classement</button>
+  `);
+  document.getElementById('bk').onclick=document.getElementById('bk2').onclick=()=>results(saved);
+}
+
+/* ----- Programmes à l'aveugle ----- */
 function blind(){
-  const order=shuffle(C.map(c=>c.id));
-  const rating={};
-  const draw=()=>{
-    const done=Object.keys(rating).length;
-    go(`
-      <div class="stack" style="gap:10px">
-        <span class="eyebrow">Programmes à l'aveugle</span>
-        <h2>16 programmes, zéro nom.</h2>
-        <p class="small">Chaque programme est résumé en six mesures marquantes. Note ceux que tu lis : l'identité se révèle quand tu as noté au moins 4 programmes. L'ordre et les lettres changent à chaque visite.</p>
-      </div>
-      <div class="progress"><div class="track"><i style="width:${done/16*100}%"></i></div><span class="count">${done} / 16</span></div>
-      ${order.map((id,k)=>`<article class="prog" id="p-${id}">
-        <div class="letter"><b>Programme ${LETTERS[k]}</b></div>
-        <ul>${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul>
-        <div class="rate" role="group" aria-label="Ton avis sur le programme ${LETTERS[k]}">
-          ${[[-1,'Non'],[0,'Bof'],[1,'Oui']].map(([v,l])=>`<button class="r${v}" data-id="${id}" data-v="${v}" aria-pressed="${rating[id]===v}">${l}</button>`).join('')}
-        </div>
-      </article>`).join('')}
-      <button class="btn env" id="revealall" ${done<4?'disabled style="opacity:.45"':''}>Lever le rideau</button>
-    `);
-    view.querySelectorAll('.rate button').forEach(b=>b.onclick=()=>{
-      rating[b.dataset.id]=+b.dataset.v;
-      b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
-      const d=Object.keys(rating).length; view.querySelector('.track i').style.width=(d/16*100)+'%'; view.querySelector('.count').textContent=d+' / 16';
-      const btn=document.getElementById('revealall'); if(d>=4){btn.disabled=false;btn.style.opacity='';}
-    });
-    document.getElementById('revealall').onclick=()=>{ if(Object.keys(rating).length>=4) revealBlind(order,rating); };
-  };
-  draw();
+  const order=shuffle(C.map(c=>c.id)),rating={};
+  go(`
+    <div class="stack" style="gap:12px">
+      <span class="eyebrow">Programmes à l'aveugle</span>
+      <h2>16 programmes. Aucun nom.</h2>
+      <p class="small">Chaque programme est résumé en 6 mesures phares. Dis si tu le soutiendrais. Note-en au moins 4, puis lève le rideau. Les lettres changent à chaque visite.</p>
+    </div>
+    ${order.map((id,k)=>`<article class="prog glass">
+      <div class="head"><span class="letter">${LET[k]}</span><h3>Programme ${LET[k]}</h3></div>
+      <ul class="bul">${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul>
+      <div class="rate" role="group" aria-label="Ton avis sur le programme ${LET[k]}">${[[-1,'Non'],[0,'Bof'],[1,'Oui']].map(([v,l])=>`<button class="r${v}" data-id="${id}" data-v="${v}" aria-pressed="false">${l}</button>`).join('')}</div>
+    </article>`).join('')}
+    <div class="sticky-cta glass"><button class="btn accent" id="rv" disabled>Lever le rideau · <span id="rc">0</span>/16</button></div>
+  `);
+  view.querySelectorAll('.rate button').forEach(b=>b.onclick=()=>{rating[b.dataset.id]=+b.dataset.v;haptic();
+    b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
+    const d=Object.keys(rating).length;document.getElementById('rc').textContent=d;document.getElementById('rv').disabled=d<4});
+  document.getElementById('rv').onclick=()=>revealBlind(order,rating);
 }
 function revealBlind(order,rating){
-  const rated=order.map((id,k)=>({id,k,v:rating[id]})).filter(x=>x.v!==undefined).sort((a,b)=>b.v-a.v);
-  const label={1:'Oui',0:'Bof','-1':'Non'};
-  const liked=rated.filter(x=>x.v===1);
+  const list=C.map(c=>({id:c.id,pct:rating[c.id]===undefined?null:(rating[c.id]+1)*50,n:rating[c.id]===undefined?0:1,r:Math.random()}))
+    .sort((a,b)=>(b.pct??-1)-(a.pct??-1)||a.r-b.r);
+  const lab={'1':'Oui','0':'Bof','-1':'Non'}, yes=list.filter(r=>r.pct===100);
   go(`
-    <div class="stack" style="gap:10px">
+    <div class="stack" style="gap:12px">
       <span class="eyebrow">Le rideau se lève</span>
-      <h2>${liked.length?`Tu as dit oui à ${liked.length} programme${liked.length>1?'s':''}.`:'Aucun programme ne t\'a convaincu.'}</h2>
+      <h2>${yes.length?`Tu soutiendrais ${yes.length} programme${yes.length>1?'s':''}.`:"Aucun programme ne t'a convaincu."}</h2>
       <p class="small">Voici qui se cache derrière chaque lettre.</p>
     </div>
-    ${rated.map(x=>`<article class="prog">
-      <div class="letter"><b>Programme ${LETTERS[x.k]}</b><span class="small">Ton avis : ${label[x.v]}</span></div>
-      <div class="reveal"><strong>${esc(byId[x.id].name)}</strong> · ${esc(byId[x.id].party)}</div>
-    </article>`).join('')}
-    <p class="callout">Pour un résultat plus fin, idée par idée, fais le test complet.</p>
-    <button class="btn" data-go="full">Faire le test complet</button>
-    <button class="btn ghost" data-go="home">Retour à l'accueil</button>
+    <div class="board glass"><ol class="rank">${list.filter(r=>r.pct!==null).map(r=>{const k=order.indexOf(r.id);return`<li><div class="rowi">
+      <span class="n">${LET[k]}</span><span class="nm">${esc(byId[r.id].name)}<small>${esc(byId[r.id].party)} · ${esc(famById[byId[r.id].fam].name)}</small></span><span class="v">${lab[String(rating[r.id])]}</span><span class="meter"><i style="width:${r.pct}%"></i></span></div></li>`}).join('')}</ol></div>
+    <div class="stack" style="gap:6px"><h2>Le classement</h2><p class="small">Oui compte 100 %, Bof 50 %, Non 0 %. Les programmes non notés n'apparaissent pas.</p></div>
+    ${boards(list,null)}
+    <p class="note glass">Pour un résultat plus fin, idée par idée, fais le test express ou le test complet.</p>
+    <button class="btn accent" data-go="express">Faire le test express</button>
+    <button class="btn glass" data-go="home">Retour à l'accueil</button>
   `);
+  wireBoards(null);
 }
 
-/* ---------- Infos & méthode ---------- */
+/* ----- Infos et méthode ----- */
 function info(){
   const others="Delphine Batho, Dominique de Villepin, Natacha Polony, Olivier Becht, Florian Philippot, François Asselineau, Anasse Kazib, Selma Labib, Juan Branco, Clara Egger, Mira Markovic, Antoine Mikolajczak, Lydie Massard, Benoît Mathieu, Francis Lalanne";
   go(`
-    <div class="stack" style="gap:8px"><span class="eyebrow">Infos pratiques</span><h2>Le calendrier</h2></div>
-    <ul class="infolist">
-      <li><span class="d">12 mars</span><span>Date limite de dépôt des 500 parrainages au Conseil constitutionnel (18 h). La liste officielle des candidats suit.</span></li>
+    <div class="stack" style="gap:10px"><span class="eyebrow">Infos pratiques</span><h2>Le calendrier 2027</h2></div>
+    <ol class="rank cal glass" style="list-style:none;margin:0">
+      <li><span class="d">12 mars</span><span>Dernier jour pour que les candidats déposent leurs 500 signatures d'élus. La liste officielle est publiée ensuite.</span></li>
       <li><span class="d">18 avril</span><span>Premier tour de l'élection présidentielle.</span></li>
       <li><span class="d">2 mai</span><span>Second tour.</span></li>
-    </ul>
-    <div class="panel">
-      <h3>Es-tu bien inscrit ?</h3>
-      <p class="small">Vérifie ton bureau de vote en deux minutes, et inscris-toi en ligne si besoin avant la date limite.</p>
-      <a class="btn" href="https://www.service-public.fr/particuliers/vosdroits/R51788" target="_blank" rel="noopener">Vérifier mon inscription</a>
-      <a class="btn ghost" href="https://www.service-public.fr/particuliers/vosdroits/F1367" target="_blank" rel="noopener">S'inscrire sur les listes</a>
+    </ol>
+    <div class="panel glass">
+      <h3>Tu es bien inscrit ?</h3>
+      <p class="small">Vérifie en deux minutes où tu votes. Si tu n'es pas inscrit, tu peux le faire en ligne.</p>
+      <a class="btn accent" href="https://www.service-public.fr/particuliers/vosdroits/R51788" target="_blank" rel="noopener">Vérifier mon inscription</a>
+      <a class="btn glass" href="https://www.service-public.fr/particuliers/vosdroits/F1367" target="_blank" rel="noopener">M'inscrire sur les listes</a>
     </div>
-    <div class="prose">
-      <h3>Qui est dans l'app ?</h3>
-      <p>Les 16 candidats déclarés testés dans au moins un sondage et dont les propositions sont assez documentées pour être comparées. D'autres personnes ont annoncé leur candidature : ${others}. Elles seront ajoutées si leur programme se précise ou si elles obtiennent leurs parrainages.</p>
-    </div>
-    <button class="btn ghost" data-go="method">Comment le score est calculé</button>
+    <div class="prose"><h3>Qui est dans l'app ?</h3><p>Les 16 candidats déclarés qui sont testés dans les sondages et dont les idées sont assez connues pour être comparées. D'autres personnes ont annoncé leur candidature : ${others}. Elles seront ajoutées si leur programme se précise ou si elles obtiennent leurs signatures.</p></div>
+    <button class="btn glass" data-go="method">Comment le score est calculé</button>
   `);
 }
 function method(){
   go(`
-    <div class="stack" style="gap:8px"><span class="eyebrow">Méthode</span><h2>Comment ça marche</h2></div>
+    <div class="stack" style="gap:10px"><span class="eyebrow">Méthode</span><h2>Comment ça marche</h2></div>
     <div class="prose">
-      <p>Chaque idée est une proposition réellement portée par au moins un candidat. Pour chaque candidat, on note s'il est pour, plutôt pour, plutôt contre ou contre. Quand sa position n'est pas connue, l'idée ne compte pas pour lui.</p>
+      <p>Chaque idée est une vraie proposition portée par au moins un candidat. Pour chacun, on note s'il est pour, plutôt pour, plutôt contre ou contre. Si on ne connaît pas sa position, l'idée ne compte pas pour lui.</p>
       <h3>Le calcul</h3>
-      <p>Si tu es d'accord avec une idée qu'un candidat soutient, il gagne des points ; s'il s'y oppose, il en perd. Une idée « importante pour moi » compte double, un thème prioritaire compte 1,5 fois. Le score final va de 0 à 100 %, 50 % voulant dire « ni proche ni éloigné ». Un candidat comparé sur peu d'idées est ramené vers 50 % pour éviter les résultats extrêmes par hasard.</p>
+      <p>Tu es d'accord avec une idée qu'un candidat défend : il gagne des points. Il s'y oppose : il en perd. « Important pour moi » compte double, un sujet prioritaire compte 1,5 fois. 50 % veut dire ni proche ni éloigné. Un candidat comparé sur peu d'idées est ramené vers 50 % pour éviter les résultats extrêmes dus au hasard.</p>
+      <h3>Les partis et les familles</h3>
+      <p>Chaque candidat représente un parti, donc le classement des partis suit celui des candidats. Les familles politiques regroupent les candidats proches. Le score d'une famille est la moyenne de ses candidats. Ce regroupement est indicatif, inspiré de celui de la presse.</p>
       <h3>Neutralité</h3>
-      <p>Les propositions sont formulées de la même façon pour tout le monde, l'ordre des thèmes et des idées est tiré au hasard, et les programmes à l'aveugle reçoivent une lettre différente à chaque visite. Aucune couleur de parti n'est utilisée.</p>
+      <p>Les idées sont écrites de la même façon pour tous, dans des mots simples. L'ordre des sujets et des idées est tiré au hasard. Les programmes à l'aveugle reçoivent une lettre différente à chaque visite. Aucune couleur de parti n'est utilisée.</p>
       <h3>Sources</h3>
-      <p>Programmes, sites de campagne et déclarations publiques, à partir de la synthèse sourcée du <a href="https://barometre-2027.fr/programmes" target="_blank" rel="noopener">Baromètre citoyen 2027</a> et de la presse (franceinfo, Public Sénat, LCP, AFP). Certaines positions viennent de programmes antérieurs que les candidats n'ont pas encore actualisés. Mise à jour : ${window.ISO_UPDATED}.</p>
+      <p>Programmes, sites de campagne et déclarations publiques, à partir de la synthèse sourcée du <a href="https://barometre-2027.fr/programmes" target="_blank" rel="noopener">Baromètre citoyen 2027</a> et de la presse (franceinfo, Public Sénat, LCP, AFP). Certaines positions viennent d'anciens programmes que les candidats n'ont pas encore mis à jour. Mise à jour : ${window.ISO_UPDATED}.</p>
       <h3>Limites</h3>
-      <p>Les programmes complets ne sont pas encore tous publiés. Un résumé ne remplace pas la lecture du programme d'un candidat. Ce test t'aide à réfléchir, il ne te dit pas pour qui voter.</p>
+      <p>Tous les programmes complets ne sont pas encore publiés. Un résumé ne remplace pas la lecture d'un programme. Ce test t'aide à réfléchir, il ne te dit pas pour qui voter.</p>
       <h3>Vie privée</h3>
-      <p>Aucune donnée n'est envoyée : tes réponses restent dans ton navigateur.</p>
+      <p>Aucune donnée n'est envoyée. Tes réponses restent dans ton navigateur. Le lien « Défier un ami » contient seulement tes réponses, pas ton nom.</p>
     </div>
-    <button class="btn" data-go="home">Retour à l'accueil</button>
+    <button class="btn accent" data-go="home">Retour à l'accueil</button>
   `);
 }
 
-/* ---------- Navigation ---------- */
-view.addEventListener('click',e=>{
-  const g=e.target.closest('[data-go]'); if(!g) return;
-  const k=g.dataset.go;
-  if(k==='express'||k==='full') priorities(k);
-  else if(k==='blind') blind();
-  else if(k==='method') method();
-  else if(k==='home') home();
-  else if(k==='last'){ const l=store.get('last'); if(l) results(l); }
-});
+/* ----- Navigation ----- */
+view.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(!g)return;const k=g.dataset.go;
+  if(k==='express'||k==='full')priorities(k);
+  else if(k==='resume'){state=store.get('progress');if(state)card();else home()}
+  else if(k==='blind')blind();else if(k==='method')method();else if(k==='home')home();
+  else if(k==='last'){const l=store.get('last');if(l)results(l)}});
 document.getElementById('home-btn').onclick=home;
 document.getElementById('info-btn').onclick=info;
-home();
-
-if('serviceWorker' in navigator && location.protocol==='https:' && /github\.io$/.test(location.hostname)){
-  navigator.serviceWorker.register('sw.js').catch(()=>{});
-}
+readHash();home();
+if('serviceWorker' in navigator&&isPages)navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script>
 
