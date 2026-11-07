@@ -163,6 +163,9 @@ p{margin:0}
 .more b{font-size:13px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
 .more b.p{color:var(--yes)} .more b.n{color:var(--no)}
 .more p{font-size:16px;line-height:1.5;color:var(--ink)}
+.args{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.args li{display:grid;grid-template-columns:12px 1fr;gap:8px;font-size:16px;line-height:1.45;color:var(--ink)}
+.args li::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.45;margin-top:9px}
 .more .src{font-size:13px;color:var(--faint)}
 .plist{list-style:none;margin:0;padding:0}
 .plist li+li{border-top:1px solid var(--hair)}
@@ -291,6 +294,7 @@ p{margin:0}
 .tabbar button[aria-current="page"]{background:var(--glass-hi);color:var(--accent);box-shadow:0 2px 10px -4px var(--shade)}
 .tabbar button:disabled{opacity:.32;cursor:default}
 .tabbar.test button.primary{color:var(--accent)}
+.tabbar.main{grid-auto-flow:row;grid-template-columns:.95fr 1.35fr 1.1fr 1.05fr .85fr}
 
 /* Comparateur et réponses */
 .sel{-webkit-appearance:none;appearance:none;width:100%;padding:14px 38px 14px 16px;border-radius:var(--r-s);border:1px solid var(--glass-border);background:var(--glass-hi);
@@ -346,8 +350,8 @@ p{margin:0}
 <div class="toast" id="toast" hidden></div>
 <div class="modal" id="modal" hidden></div>
 
-<script src="data.js?v=5"></script>
-<script src="progs.js?v=5"></script>
+<script src="data.js?v=6"></script>
+<script src="progs.js?v=6"></script>
 <script>
 (function(){
 const T=window.ISO_THEMES, C=window.ISO_CANDIDATES, S=window.ISO_STATEMENTS, P=window.ISO_PROGRAMMES, F=window.ISO_FAMILIES;
@@ -393,13 +397,14 @@ function home(){nav('main','home');
     <div class="stack">
       <button class="mode main" data-go="express"><b>Test express</b><span>Les idées qui départagent le plus les candidats</span><em><strong>${CORE}</strong>idées · 4 min</em></button>
       <button class="mode glass" data-go="full"><b>Test complet</b><span>Toutes les propositions, pour un résultat plus précis</span><em><strong>${S.length}</strong>idées · 10 min</em></button>
+      <button class="mode glass" data-go="theme"><b>Test par thème</b><span>Choisis les sujets qui t'intéressent : retraites, écologie, école…</span><em><strong>10</strong>thèmes</em></button>
       <button class="mode glass" data-go="blind"><b>Programmes à l'aveugle</b><span>Lis 16 programmes résumés, note-les, découvre qui est qui</span><em><strong>16</strong>programmes</em></button>
     </div>
     ${last?`<button class="banner glass" data-go="last"><div><b>Ton dernier résultat</b><span>${esc(byId[last.top]?.name||'')}</span></div><span class="go">Revoir</span></button>`:''}
     <div class="how glass">
       <h3>Comment ça marche</h3>
       <ol>
-        <li>Une question s'affiche, sans nom ni parti. Réponds de « Non » à « Oui », avec des nuances. Besoin de contexte ? Touche « En savoir plus » pour voir la situation et les arguments des deux camps.</li>
+        <li>Une question s'affiche, sans nom ni parti. Réponds de « Non » à « Oui », avec des nuances. Un doute ? « En savoir plus » t'explique la situation, ce que ça changerait et les arguments des deux camps.</li>
         <li>Coche « Important pour moi » sur les sujets qui comptent : ils pèsent double.</li>
         <li>On compare tes réponses aux positions des 16 candidats et on révèle ton classement.</li>
       </ol>
@@ -410,23 +415,25 @@ function home(){nav('main','home');
 
 /* ----- Priorités ----- */
 function priorities(mode){nav('main','home');
+  const th=mode==='theme';
   go(`
     <div class="stack" style="gap:12px">
-      <span class="eyebrow">Avant de commencer</span>
-      <h2>Qu'est-ce qui compte le plus pour toi ?</h2>
-      <p class="small">Choisis jusqu'à 3 sujets. Ils compteront un peu plus dans ton résultat. Tu peux aussi passer cette étape.</p>
+      <span class="eyebrow">${th?'Test par thème':'Avant de commencer'}</span>
+      <h2>${th?'Quels sujets veux-tu explorer ?':"Qu'est-ce qui compte le plus pour toi ?"}</h2>
+      <p class="small">${th?'Choisis un ou plusieurs thèmes. Tu répondras à toutes les questions de ces thèmes, et seulement à celles-là.':'Choisis jusqu\'à 3 sujets. Ils compteront un peu plus dans ton résultat. Tu peux aussi passer cette étape.'}</p>
     </div>
     <div class="chips">${Object.entries(T).map(([k,v])=>`<button class="chip" aria-pressed="false" data-k="${k}">${esc(v)}</button>`).join('')}</div>
     <button class="btn accent" id="start" style="margin-top:8px">C'est parti</button>
   `);
   view.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{const on=b.getAttribute('aria-pressed')==='true';
-    if(!on&&view.querySelectorAll('.chip[aria-pressed="true"]').length>=3){toast('3 sujets maximum');return}
+    if(!th&&!on&&view.querySelectorAll('.chip[aria-pressed="true"]').length>=3){toast('3 sujets maximum');return}
     b.setAttribute('aria-pressed',String(!on));haptic()});
   document.getElementById('start').onclick=()=>{
     const pr=[...view.querySelectorAll('.chip[aria-pressed="true"]')].map(b=>b.dataset.k);
-    const pool=mode==='express'?S.filter(s=>s.core):S;
+    if(th&&!pr.length){toast('Choisis au moins un thème');return}
+    const pool=mode==='express'?S.filter(s=>s.core):th?S.filter(s=>pr.includes(s.t)):S;
     const ids=shuffle(Object.keys(T)).flatMap(t=>shuffle(pool.filter(s=>s.t===t)).map(s=>s.id));
-    state={mode,ids,i:0,answers:{},important:{},priorities:pr};save();card();
+    state={mode,ids,i:0,answers:{},important:{},priorities:th?[]:pr};save();card();
   };
 }
 function save(){store.set('progress',state)}
@@ -445,9 +452,10 @@ function card(){
         <div class="q">${esc(s.text)}</div>
         <button class="help-btn" id="hb">En savoir plus</button>
         <div class="more" id="ht" hidden>
-          <div><b>Aujourd'hui</b><p>${esc(s.ctx)}</p></div>
-          <div><b class="p">Ceux qui sont pour disent</b><p>${esc(s.pour)}</p></div>
-          <div><b class="n">Ceux qui sont contre disent</b><p>${esc(s.contre)}</p></div>
+          <div><b>La situation aujourd'hui</b><p>${esc(s.ctx)}</p></div>
+          <div><b>Concrètement, ça changerait quoi ?</b><p>${esc(s.concret)}</p></div>
+          <div><b class="p">Ceux qui sont pour disent</b><ul class="args">${s.pour.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
+          <div><b class="n">Ceux qui sont contre disent</b><ul class="args">${s.contre.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
           <p class="src">Arguments résumés des deux camps, pas l'avis de l'app.</p>
         </div>
       </article>
@@ -641,8 +649,8 @@ function detail(id,saved){nav('main','result');
     <div class="stack" style="gap:8px"><span class="fam" style="align-self:flex-start">${esc(famById[c.fam].name)}</span><h2>${esc(c.name)}</h2><p class="small">${esc(c.party)}</p></div>
     <div class="hero glass hi" style="padding:22px"><div class="big" style="margin:0">${r.pct===null?'–':r.pct+'<small>%</small>'}</div><div class="lbl">${r.pct===null?'Pas assez d\'idées en commun pour comparer':`de proximité, sur ${r.n} idées comparées`}</div></div>
     ${th.length?`<div class="panel glass"><h3>Sujet par sujet</h3>${th.map(x=>`<div class="thm"><span>${esc(T[x.t])}</span><b>${x.p}%</b><span class="meter"><i style="width:${x.p}%"></i></span></div>`).join('')}</div>`:''}
-    ${r.agree.length?`<div class="panel glass"><h3>Vous êtes d'accord</h3>${r.agree.map(i=>`<div class="idea"><span class="dot ok"></span><span>${esc(sById[i].text)}</span></div>`).join('')}</div>`:''}
-    ${r.disagree.length?`<div class="panel glass"><h3>Vous n'êtes pas d'accord</h3>${r.disagree.map(i=>`<div class="idea"><span class="dot ko"></span><span>${esc(sById[i].text)}</span></div>`).join('')}</div>`:''}
+    ${r.agree.length?`<div class="panel glass"><h3>Vous êtes d'accord</h3>${r.agree.map(i=>`<div class="idea"><span class="dot ok"></span><span>${esc(sById[i].label)}</span></div>`).join('')}</div>`:''}
+    ${r.disagree.length?`<div class="panel glass"><h3>Vous n'êtes pas d'accord</h3>${r.disagree.map(i=>`<div class="idea"><span class="dot ko"></span><span>${esc(sById[i].label)}</span></div>`).join('')}</div>`:''}
     <div class="panel glass"><h3>Son programme en bref</h3><ul class="bul">${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul><button class="btn glass" id="fullprog">Lire tout son programme</button></div>
     <button class="btn glass" id="bk2">Retour au classement</button>
   `);
@@ -754,7 +762,7 @@ function nav(mode,active){
     bar.className='tabbar glass test';
     bar.innerHTML=tb('prev','Précédente','prev',{dis:state.i===0})+tb('pause','Menu','pause')+tb('finish','Résultat','result',{dis:n<5,cls:'primary'});
   } else {
-    bar.className='tabbar glass';
+    bar.className='tabbar glass main';
     bar.innerHTML=tb('home','Accueil','home',{cur:active==='home'})+tb('learn','Programmes','learn',{cur:active==='learn'})+tb('compare','Comparer','compare',{cur:active==='compare'})+tb('result','Résultat','result',{cur:active==='result'})+tb('info','Infos','info',{cur:active==='info'});
   }
 }
@@ -794,7 +802,7 @@ function compare(a,b,onlyDiff){
     <div class="vs"><select class="sel" id="ca" aria-label="Premier candidat">${opt(a)}</select><span>VS</span><select class="sel" id="cb" aria-label="Second candidat">${opt(b)}</select></div>
     <div class="sum"><div class="glass"><b>${same}</b><span>idées en commun</span></div><div class="glass"><b>${diff}</b><span>désaccords</span></div></div>
     <button class="toggle" id="od" aria-pressed="${!!onlyDiff}"><i></i>Afficher seulement les désaccords</button>
-    ${themes.map(t=>`<div class="board glass"><h3 style="padding-top:16px">${esc(T[t])}</h3>${shown.filter(s=>s.t===t).map(s=>`<div class="cmp"><p>${esc(s.text)}</p><div class="two">${cell(a,s.pos[a])}${cell(b,s.pos[b])}</div></div>`).join('')}</div>`).join('')||'<p class="note glass">Aucun désaccord connu entre ces deux candidats sur les idées de l\'app.</p>'}
+    ${themes.map(t=>`<div class="board glass"><h3 style="padding-top:16px">${esc(T[t])}</h3>${shown.filter(s=>s.t===t).map(s=>`<div class="cmp"><p>${esc(s.label)}</p><div class="two">${cell(a,s.pos[a])}${cell(b,s.pos[b])}</div></div>`).join('')}</div>`).join('')||'<p class="note glass">Aucun désaccord connu entre ces deux candidats sur les idées de l\'app.</p>'}
     <p class="tiny" style="padding:0 6px">« Pas de position connue » veut dire que le candidat ne s'est pas encore exprimé clairement sur ce point.</p>
   `);
   document.getElementById('ca').onchange=e=>compare(e.target.value,b,onlyDiff);
@@ -826,17 +834,17 @@ const lastName=n=>n.split(' ').slice(-1)[0];
 const slug=n=>n.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().replace(/[^a-z]+/g,'-').replace(/^-|-$/g,'');
 function learn(tab){
   nav('main','learn');tab=tab||'cand';
-  const sorted=C.slice().sort((a,b)=>lastName(a.name).localeCompare(lastName(b.name),'fr'));
+  const sorted=C.slice().sort((a,b)=>a.party.localeCompare(b.party,'fr'));
   go(`
-    <div class="stack" style="gap:12px"><span class="eyebrow">S'informer</span><h2>Programmes et politique</h2>
-      <p class="small">Lis ce que propose chaque candidat, en version simple ou détaillée, et révise les mots de la politique.</p></div>
+    <div class="stack" style="gap:12px"><span class="eyebrow">S'informer</span><h2>Les programmes des partis</h2>
+      <p class="small">Choisis un parti et lis son programme thème par thème, en version simplifiée ou classique. Révise aussi les mots de la politique.</p></div>
     <div class="seg glass" role="tablist">
-      <button role="tab" aria-selected="${tab==='cand'}" data-lt="cand">Candidats</button>
+      <button role="tab" aria-selected="${tab==='cand'}" data-lt="cand">Partis</button>
       <button role="tab" aria-selected="${tab==='gl'}" data-lt="gl">Lexique</button>
       <button role="tab" aria-selected="${tab==='el'}" data-lt="el">L'élection</button>
     </div>
-    ${tab==='cand'?`<div class="board glass"><ul class="plist">${sorted.map(c=>`<li><button data-prog="${c.id}"><b>${esc(c.name)}</b><span>${esc(c.party)} · ${esc(famById[c.fam].name)}</span><i aria-hidden="true">›</i></button></li>`).join('')}</ul></div>
-      <p class="tiny" style="padding:0 6px">Classés par ordre alphabétique du nom de famille.</p>`:''}
+    ${tab==='cand'?`<div class="board glass"><ul class="plist">${sorted.map(c=>`<li><button data-prog="${c.id}"><b>${esc(c.party)}</b><span>${esc(c.name)} · ${esc(famById[c.fam].name)}</span><i aria-hidden="true">›</i></button></li>`).join('')}</ul></div>
+      <p class="tiny" style="padding:0 6px">Classés par ordre alphabétique.</p>`:''}
     ${tab==='gl'?`<div class="gl glass">${window.ISO_GLOSSARY.map(([w,d])=>`<div><b>${esc(w)}</b><p>${esc(d)}</p></div>`).join('')}</div>`:''}
     ${tab==='el'?`<div class="gl glass">${window.ISO_ELECTION.map(([w,d])=>`<div><b>${esc(w)}</b><p>${esc(d)}</p></div>`).join('')}</div>
       <a class="btn accent" href="https://www.service-public.fr/particuliers/vosdroits/R51788" target="_blank" rel="noopener">Vérifier mon inscription</a>`:''}
@@ -848,11 +856,11 @@ function progPage(id,mode){
   nav('main','learn');
   const c=byId[id],p=window.ISO_PROGS[id];
   go(`
-    <button class="linkbtn" id="bk" style="align-self:flex-start">Tous les candidats</button>
-    <div class="stack" style="gap:8px"><span class="fam" style="align-self:flex-start">${esc(famById[c.fam].name)}</span><h2>${esc(c.name)}</h2><p class="small"><strong>${esc(c.party)}</strong>. ${esc(p.intro)}</p></div>
+    <button class="linkbtn" id="bk" style="align-self:flex-start">Tous les partis</button>
+    <div class="stack" style="gap:8px"><span class="fam" style="align-self:flex-start">${esc(famById[c.fam].name)}</span><h2>${esc(c.party)}</h2><p class="small">Candidat${['na','mt','mlp'].includes(id)?'e':''} : <strong>${esc(c.name)}</strong>. ${esc(p.intro)}</p></div>
     <div class="seg glass" role="tablist" style="grid-template-columns:1fr 1fr">
-      <button role="tab" aria-selected="${mode==='s'}" data-m="s">Version simple</button>
-      <button role="tab" aria-selected="${mode==='d'}" data-m="d">Version détaillée</button>
+      <button role="tab" aria-selected="${mode==='s'}" data-m="s">Simplifiée</button>
+      <button role="tab" aria-selected="${mode==='d'}" data-m="d">Classique</button>
     </div>
     ${Object.keys(T).map(t=>{const x=p.t[t];const empty=!x.d.length;return`<section class="theme-sec glass"><span class="tag">${esc(T[t])}</span>
       ${mode==='s'||empty?`<p class="simple ${empty?'none':''}">${esc(x.s)}</p>`:`<ul class="bul">${x.d.map(m=>`<li>${esc(m)}</li>`).join('')}</ul>`}</section>`}).join('')}
@@ -870,7 +878,7 @@ function progPage(id,mode){
 
 /* ----- Navigation ----- */
 view.addEventListener('click',e=>{const g=e.target.closest('[data-go]');if(!g)return;const k=g.dataset.go;
-  if(k==='express'||k==='full')priorities(k);
+  if(k==='express'||k==='full'||k==='theme')priorities(k);
   else if(k==='resume'){state=store.get('progress');if(state)card();else home()}
   else if(k==='blind')blind();else if(k==='compare')compare();else if(k==='method')method();else if(k==='home')home();
   else if(k==='last'){const l=store.get('last');if(l)results(l)}});
