@@ -1,7 +1,7 @@
 // Isoloir 2027 — données.
 // Sources : barometre-2027.fr (synthèses sourcées, à jour 15-19 oct. 2026), sites de campagne et presse cités.
 // Positions : 1 = pour, 0.5 = plutôt pour, -0.5 = plutôt contre, -1 = contre. Absent = non documenté (ne compte pas).
-window.ISO_UPDATED = "6 novembre 2026";
+window.ISO_UPDATED = "9 novembre 2026";
 window.ISO_ROUND1 = "2027-04-18";
 
 window.ISO_THEMES = {
@@ -26,7 +26,8 @@ window.ISO_FAMILIES = [
   { id:"c",   name:"Centre",                    short:"Centre" },
   { id:"d",   name:"Droite",                    short:"Droite" },
   { id:"ds",  name:"Droite souverainiste",      short:"Souverain." },
-  { id:"xd",  name:"Extrême droite",            short:"Ext. droite" }
+  { id:"xd",  name:"Extrême droite",            short:"Ext. droite" },
+  { id:"ind", name:"Sans étiquette",            short:"Sans étiq.", off:true }
 ];
 
 window.ISO_CANDIDATES = [
@@ -45,7 +46,8 @@ window.ISO_CANDIDATES = [
   { id:"dl",  name:"David Lisnard",         party:"Nouvelle Énergie",          fam:"d" },
   { id:"nda", name:"Nicolas Dupont-Aignan", party:"Debout la France",          fam:"ds" },
   { id:"mlp", name:"Marine Le Pen",         party:"Rassemblement national",    fam:"xd" },
-  { id:"ez",  name:"Éric Zemmour",          party:"Reconquête",                fam:"xd" }
+  { id:"ez",  name:"Éric Zemmour",          party:"Reconquête",                fam:"xd" },
+  { id:"tr",  name:"Teddy Riner",           party:"La France qu'on veut (sans parti)", fam:"ind" }
 ];
 
 // core: 1 = dans le test express. text = la question, posée à l'utilisateur.
@@ -79,7 +81,7 @@ window.ISO_STATEMENTS = [
     concret:"Ton salaire net augmenterait, mais l'État devrait économiser ailleurs pour continuer à financer la protection sociale.",
     pour:["Plus d'argent à la fin du mois sans coûter plus cher aux employeurs.","Le travail en France est parmi les plus taxés d'Europe."],
     contre:["Les économies toucheraient forcément des services publics ou des aides.","Fragilise le financement de la Sécu et des retraites."],
-    pos:{dl:1,br:1,ga:0.5} },
+    pos:{dl:1,br:1,ga:0.5,tr:0.5} },
   { id:"e5", t:"eco", core:1, label:"Faut-il plafonner le total des aides sociales en dessous du SMIC ?",
     text:"À ton avis, le total des aides sociales devrait-il toujours rester en dessous du SMIC ?",
     ctx:"Le RSA, la prime d'activité ou les APL dépendent des revenus et de la situation familiale. Leur total varie beaucoup d'un foyer à l'autre.",
@@ -628,5 +630,6 @@ window.ISO_PROGRAMMES = {
   dl:  ["Environ 400 € net de plus par mois grâce à moins de charges","200 milliards d'économies, suppression d'agences de l'État","Une épargne retraite obligatoire en plus du système actuel","Huit fois moins de titres de séjour délivrés","Liberté de choisir son école, publique ou privée","20 000 places de prison, mineurs jugés comme des adultes dès 16 ans"],
   nda: ["Sortir de l'Union européenne par référendum","Taxer les produits étrangers pour relocaliser 2 millions d'emplois","Essence moins chère de 40 centimes","Retraite à 62 ans et 9 mois","Fin de la libre circulation en Europe et fin du droit du sol","Fin de l'aide à l'Ukraine"],
   mlp: ["Retour de la retraite à 62 ans, 60 ans si on a commencé à travailler tôt","Référendum sur l'immigration et priorité aux Français","Logement social et APL réservés aux Français","140 milliards d'économies et 30 milliards de baisses d'impôts","Plus de nucléaire, fin des aides à l'éolien et au solaire","Moins d'aide financière à l'Ukraine"],
+  tr:  ["Augmenter le salaire net en allégeant les charges","Pouvoir travailler plus pour gagner plus, au-delà des 35 heures","Revoir la réforme des retraites en gardant le système par répartition","Réconcilier les Français et réduire la « fracture sociale »","Valoriser les talents et l'excellence française","Ni de droite ni de gauche, sans parti"],
   ez:  ["Un étranger en règle devrait quitter la France après un an de chômage","Retraite à 64 ou 65 ans","Heures supplémentaires sans impôt ni charges","Un examen d'entrée en 6e","14 nouveaux réacteurs nucléaires, plus de nouvelles éoliennes","Mineurs jugés comme des adultes dès 16 ans"]
 };

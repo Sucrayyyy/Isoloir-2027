@@ -171,6 +171,7 @@ p{margin:0}
 .plist li+li{border-top:1px solid var(--hair)}
 .plist button{display:grid;grid-template-columns:1fr auto;gap:2px 12px;align-items:center;width:100%;background:none;border:0;padding:16px 0;text-align:left;cursor:pointer}
 .plist b{font-size:17px}
+.new{display:inline-block;vertical-align:2px;margin-left:6px;font-size:11px;font-weight:750;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:999px}
 .plist span{grid-column:1;font-size:14px;color:var(--muted)}
 .plist i{grid-row:1/3;grid-column:2;font-style:normal;color:var(--accent);font-weight:700;font-size:20px}
 .theme-sec{padding:18px 20px;display:flex;flex-direction:column;gap:10px}
@@ -244,7 +245,7 @@ p{margin:0}
 .meter i{display:block;height:100%;border-radius:7px;background:var(--ink);opacity:.75}
 .rank li:first-child .meter i{background:var(--accent);opacity:1}
 .spectrum{padding:18px;display:flex;flex-direction:column;gap:12px}
-.spec-bar{display:grid;grid-template-columns:repeat(8,1fr);gap:4px;height:46px}
+.spec-bar{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;height:46px}
 .spec-bar span{border-radius:10px;background:var(--accent);position:relative}
 .spec-ends{display:flex;justify-content:space-between;font-size:13px;font-weight:650;color:var(--faint)}
 
@@ -350,8 +351,8 @@ p{margin:0}
 <div class="toast" id="toast" hidden></div>
 <div class="modal" id="modal" hidden></div>
 
-<script src="data.js?v=6"></script>
-<script src="progs.js?v=6"></script>
+<script src="data.js?v=7"></script>
+<script src="progs.js?v=7"></script>
 <script>
 (function(){
 const T=window.ISO_THEMES, C=window.ISO_CANDIDATES, S=window.ISO_STATEMENTS, P=window.ISO_PROGRAMMES, F=window.ISO_FAMILIES;
@@ -360,7 +361,8 @@ const view=document.getElementById('view');
 const store={ get(k){try{return JSON.parse(localStorage.getItem('iso27:'+k))}catch(e){return null}}, set(k,v){try{localStorage.setItem('iso27:'+k,JSON.stringify(v))}catch(e){}}, del(k){try{localStorage.removeItem('iso27:'+k)}catch(e){}} };
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-const LET="ABCDEFGHIJKLMNOP";
+const LET="ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const NC=C.length;
 const CORE=S.filter(s=>s.core).length;
 const BASE=location.href.split('#')[0];
 const isPages=/github\.io$/.test(location.hostname);
@@ -398,7 +400,7 @@ function home(){nav('main','home');
       <button class="mode main" data-go="express"><b>Test express</b><span>Les idées qui départagent le plus les candidats</span><em><strong>${CORE}</strong>idées · 4 min</em></button>
       <button class="mode glass" data-go="full"><b>Test complet</b><span>Toutes les propositions, pour un résultat plus précis</span><em><strong>${S.length}</strong>idées · 10 min</em></button>
       <button class="mode glass" data-go="theme"><b>Test par thème</b><span>Choisis les sujets qui t'intéressent : retraites, écologie, école…</span><em><strong>10</strong>thèmes</em></button>
-      <button class="mode glass" data-go="blind"><b>Programmes à l'aveugle</b><span>Lis 16 programmes résumés, note-les, découvre qui est qui</span><em><strong>16</strong>programmes</em></button>
+      <button class="mode glass" data-go="blind"><b>Programmes à l'aveugle</b><span>Lis ${NC} programmes résumés, note-les, découvre qui est qui</span><em><strong>${NC}</strong>programmes</em></button>
     </div>
     ${last?`<button class="banner glass" data-go="last"><div><b>Ton dernier résultat</b><span>${esc(byId[last.top]?.name||'')}</span></div><span class="go">Revoir</span></button>`:''}
     <div class="how glass">
@@ -406,7 +408,7 @@ function home(){nav('main','home');
       <ol>
         <li>Une question s'affiche, sans nom ni parti. Réponds de « Non » à « Oui », avec des nuances. Un doute ? « En savoir plus » t'explique la situation, ce que ça changerait et les arguments des deux camps.</li>
         <li>Coche « Important pour moi » sur les sujets qui comptent : ils pèsent double.</li>
-        <li>On compare tes réponses aux positions des 16 candidats et on révèle ton classement.</li>
+        <li>On compare tes réponses aux positions des ${NC} candidats et on révèle ton classement.</li>
       </ol>
     </div>
     <p class="foot">Outil indépendant et neutre. Positions à jour au ${window.ISO_UPDATED}.<br>Tes réponses restent sur ton téléphone. <button class="linkbtn" data-go="method">Voir la méthode</button></p>
@@ -500,14 +502,14 @@ function compute(answers,important,prios){
     for(const s of S){const u=answers[s.id],p=s.pos[c.id];if(!u||p===undefined)continue;
       const w=(important[s.id]?2:1)*(prios.includes(s.t)?1.5:1);sc+=w*u*p;max+=w*Math.abs(p);n++;
       th[s.t]=th[s.t]||{sc:0,max:0};th[s.t].sc+=w*u*p;th[s.t].max+=w*Math.abs(p);(u*p>0?agree:disagree).push(s.id)}
-    return{id:c.id,pct:max>0?Math.round(50+50*sc/(max+4)):null,n,th,agree,disagree,r:Math.random()};
+    return{id:c.id,pct:max>0&&n>=3?Math.round(50+50*sc/(max+4)):null,n,th,agree,disagree,r:Math.random()};
   }).sort((a,b)=>(b.pct??-1)-(a.pct??-1)||b.n-a.n||a.r-b.r);
 }
 function counting(){nav('none');
   const nAns=Object.values(state.answers).filter(v=>v).length;
   go(`<div class="counting"><div class="stack" style="align-items:center;gap:16px">
     <div class="urn" aria-hidden="true"><div class="body glass"></div><div class="slot"></div><div class="paper"></div></div>
-    <h2>Dépouillement…</h2><p class="small">On compare tes ${nAns} réponses aux positions des 16 candidats.</p></div></div>`);
+    <h2>Dépouillement…</h2><p class="small">On compare tes ${nAns} réponses aux positions des ${NC} candidats.</p></div></div>`);
   const saved={answers:state.answers,important:state.important,priorities:state.priorities,at:Date.now()};
   saved.top=compute(saved.answers,saved.important,saved.priorities)[0].id;
   store.set('last',saved);store.del('progress');
@@ -521,7 +523,7 @@ function famScores(list){
 }
 function boards(list,unit){
   const fams=famScores(list), famSorted=fams.slice().sort((a,b)=>(b.pct??-1)-(a.pct??-1));
-  const valid=fams.map(f=>f.pct??0), mn=Math.min(...valid), mx=Math.max(...valid);
+  const onSpec=fams.filter(f=>!famById[f.id].off), valid=onSpec.map(f=>f.pct??0), mn=Math.min(...valid), mx=Math.max(...valid);
   const row=(k,main,sub,pct,attr)=>`<li><${attr?'button '+attr:'div class="rowi"'}><span class="n">${k}</span><span class="nm">${main}<small>${sub}</small></span><span class="v">${pct===null?'–':pct+'%'}</span><span class="meter"><i style="width:${pct??0}%"></i></span></${attr?'button':'div'}></li>`;
   return `
   <div class="seg glass" role="tablist">
@@ -534,7 +536,7 @@ function boards(list,unit){
   <div data-pane="fam" hidden class="stack">
     <div class="spectrum glass">
       <h3>Où tu te situes</h3>
-      <div class="spec-bar">${fams.map(f=>{const o=f.pct===null?.06:.12+.88*((f.pct-mn)/Math.max(1,mx-mn));return`<span title="${esc(famById[f.id].name)}" style="opacity:${o.toFixed(2)}"></span>`}).join('')}</div>
+      <div class="spec-bar">${onSpec.map(f=>{const o=f.pct===null?.06:.12+.88*((f.pct-mn)/Math.max(1,mx-mn));return`<span title="${esc(famById[f.id].name)}" style="opacity:${o.toFixed(2)}"></span>`}).join('')}</div>
       <div class="spec-ends"><span>Gauche</span><span>Centre</span><span>Droite</span></div>
       <p class="tiny">Plus la case est foncée, plus tu es proche de cette famille politique.</p>
     </div>
@@ -647,7 +649,7 @@ function detail(id,saved){nav('main','result');
   go(`
     <button class="linkbtn" id="bk" style="align-self:flex-start">Retour au classement</button>
     <div class="stack" style="gap:8px"><span class="fam" style="align-self:flex-start">${esc(famById[c.fam].name)}</span><h2>${esc(c.name)}</h2><p class="small">${esc(c.party)}</p></div>
-    <div class="hero glass hi" style="padding:22px"><div class="big" style="margin:0">${r.pct===null?'–':r.pct+'<small>%</small>'}</div><div class="lbl">${r.pct===null?'Pas assez d\'idées en commun pour comparer':`de proximité, sur ${r.n} idées comparées`}</div></div>
+    <div class="hero glass hi" style="padding:22px"><div class="big" style="margin:0">${r.pct===null?'–':r.pct+'<small>%</small>'}</div><div class="lbl">${r.pct===null?'Pas assez de positions connues pour le comparer à toi (il en faut au moins 3)':`de proximité, sur ${r.n} idées comparées`}</div></div>
     ${th.length?`<div class="panel glass"><h3>Sujet par sujet</h3>${th.map(x=>`<div class="thm"><span>${esc(T[x.t])}</span><b>${x.p}%</b><span class="meter"><i style="width:${x.p}%"></i></span></div>`).join('')}</div>`:''}
     ${r.agree.length?`<div class="panel glass"><h3>Vous êtes d'accord</h3>${r.agree.map(i=>`<div class="idea"><span class="dot ok"></span><span>${esc(sById[i].label)}</span></div>`).join('')}</div>`:''}
     ${r.disagree.length?`<div class="panel glass"><h3>Vous n'êtes pas d'accord</h3>${r.disagree.map(i=>`<div class="idea"><span class="dot ko"></span><span>${esc(sById[i].label)}</span></div>`).join('')}</div>`:''}
@@ -664,7 +666,7 @@ function blind(){nav('main','home');
   go(`
     <div class="stack" style="gap:12px">
       <span class="eyebrow">Programmes à l'aveugle</span>
-      <h2>16 programmes. Aucun nom.</h2>
+      <h2>${NC} programmes. Aucun nom.</h2>
       <p class="small">Chaque programme est résumé en 6 mesures phares. Dis si tu le soutiendrais. Note-en au moins 4, puis lève le rideau. Les lettres changent à chaque visite.</p>
     </div>
     ${order.map((id,k)=>`<article class="prog glass">
@@ -672,7 +674,7 @@ function blind(){nav('main','home');
       <ul class="bul">${P[id].map(m=>`<li>${esc(m)}</li>`).join('')}</ul>
       <div class="rate" role="group" aria-label="Ton avis sur le programme ${LET[k]}">${[[-1,'Non'],[0,'Bof'],[1,'Oui']].map(([v,l])=>`<button class="r${v}" data-id="${id}" data-v="${v}" aria-pressed="false">${l}</button>`).join('')}</div>
     </article>`).join('')}
-    <div class="sticky-cta glass"><button class="btn accent" id="rv" disabled>Lever le rideau · <span id="rc">0</span>/16</button></div>
+    <div class="sticky-cta glass"><button class="btn accent" id="rv" disabled>Lever le rideau · <span id="rc">0</span>/${NC}</button></div>
   `);
   view.querySelectorAll('.rate button').forEach(b=>b.onclick=()=>{rating[b.dataset.id]=+b.dataset.v;haptic();
     b.parentElement.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x===b)));
@@ -716,7 +718,7 @@ function info(){nav('main','info');
       <a class="btn accent" href="https://www.service-public.fr/particuliers/vosdroits/R51788" target="_blank" rel="noopener">Vérifier mon inscription</a>
       <a class="btn glass" href="https://www.service-public.fr/particuliers/vosdroits/F1367" target="_blank" rel="noopener">M'inscrire sur les listes</a>
     </div>
-    <div class="prose"><h3>Qui est dans l'app ?</h3><p>Les 16 candidats déclarés qui sont testés dans les sondages et dont les idées sont assez connues pour être comparées. D'autres personnes ont annoncé leur candidature : ${others}. Elles seront ajoutées si leur programme se précise ou si elles obtiennent leurs signatures.</p></div>
+    <div class="prose"><h3>Qui est dans l'app ?</h3><p>${NC} candidats déclarés, testés dans les sondages ou très médiatisés. Dernier ajout : Teddy Riner, le 9 novembre 2026. Son programme n'étant pas encore publié, il n'est comparé que sur les rares idées qu'il a déjà exprimées. D'autres personnes ont annoncé leur candidature : ${others}. Elles seront ajoutées si leur programme se précise ou si elles obtiennent leurs signatures.</p></div>
     <button class="btn glass" data-go="method">Comment le score est calculé</button>
   `);
 }
@@ -843,7 +845,7 @@ function learn(tab){
       <button role="tab" aria-selected="${tab==='gl'}" data-lt="gl">Lexique</button>
       <button role="tab" aria-selected="${tab==='el'}" data-lt="el">L'élection</button>
     </div>
-    ${tab==='cand'?`<div class="board glass"><ul class="plist">${sorted.map(c=>`<li><button data-prog="${c.id}"><b>${esc(c.party)}</b><span>${esc(c.name)} · ${esc(famById[c.fam].name)}</span><i aria-hidden="true">›</i></button></li>`).join('')}</ul></div>
+    ${tab==='cand'?`<div class="board glass"><ul class="plist">${sorted.map(c=>`<li><button data-prog="${c.id}"><b>${esc(c.party)}${window.ISO_PROGS[c.id].isNew?' <span class="new">Nouveau</span>':''}</b><span>${esc(c.name)} · ${esc(famById[c.fam].name)}</span><i aria-hidden="true">›</i></button></li>`).join('')}</ul></div>
       <p class="tiny" style="padding:0 6px">Classés par ordre alphabétique.</p>`:''}
     ${tab==='gl'?`<div class="gl glass">${window.ISO_GLOSSARY.map(([w,d])=>`<div><b>${esc(w)}</b><p>${esc(d)}</p></div>`).join('')}</div>`:''}
     ${tab==='el'?`<div class="gl glass">${window.ISO_ELECTION.map(([w,d])=>`<div><b>${esc(w)}</b><p>${esc(d)}</p></div>`).join('')}</div>
@@ -867,7 +869,7 @@ function progPage(id,mode){
     <p class="tiny" style="padding:0 6px">« (2022) » signale une mesure d'un ancien programme pas encore mise à jour. Résumé fait à partir de sources publiques, à jour au ${window.ISO_UPDATED}.</p>
     <div class="stack">
       ${p.site?`<a class="btn accent" href="${p.site[1]}" target="_blank" rel="noopener">${esc(p.site[0])}</a>`:`<p class="note glass">Pas encore de programme complet publié en ligne.</p>`}
-      <a class="btn glass" href="https://barometre-2027.fr/programmes/${slug(c.name)}" target="_blank" rel="noopener">Toutes les sources, mesure par mesure</a>
+      ${p.src?`<a class="btn glass" href="${p.src[1]}" target="_blank" rel="noopener">${esc(p.src[0])}</a>`:`<a class="btn glass" href="https://barometre-2027.fr/programmes/${slug(c.name)}" target="_blank" rel="noopener">Toutes les sources, mesure par mesure</a>`}
       <button class="btn glass" id="cmp">Le comparer à un autre candidat</button>
     </div>
   `);
