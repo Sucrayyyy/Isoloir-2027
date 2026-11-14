@@ -351,8 +351,8 @@ p{margin:0}
 <div class="toast" id="toast" hidden></div>
 <div class="modal" id="modal" hidden></div>
 
-<script src="data.js?v=7"></script>
-<script src="progs.js?v=7"></script>
+<script src="data.js?v=8"></script>
+<script src="progs.js?v=8"></script>
 <script>
 (function(){
 const T=window.ISO_THEMES, C=window.ISO_CANDIDATES, S=window.ISO_STATEMENTS, P=window.ISO_PROGRAMMES, F=window.ISO_FAMILIES;
@@ -718,7 +718,8 @@ function info(){nav('main','info');
       <a class="btn accent" href="https://www.service-public.fr/particuliers/vosdroits/R51788" target="_blank" rel="noopener">Vérifier mon inscription</a>
       <a class="btn glass" href="https://www.service-public.fr/particuliers/vosdroits/F1367" target="_blank" rel="noopener">M'inscrire sur les listes</a>
     </div>
-    <div class="prose"><h3>Qui est dans l'app ?</h3><p>${NC} candidats déclarés, testés dans les sondages ou très médiatisés. Dernier ajout : Teddy Riner, le 9 novembre 2026. Son programme n'étant pas encore publié, il n'est comparé que sur les rares idées qu'il a déjà exprimées. D'autres personnes ont annoncé leur candidature : ${others}. Elles seront ajoutées si leur programme se précise ou si elles obtiennent leurs signatures.</p></div>
+    ${(window.ISO_CHANGES||[]).length?`<div class="panel glass"><h3>Quoi de neuf ?</h3><p class="tiny">Mise à jour du ${window.ISO_UPDATED}</p><ul class="bul">${window.ISO_CHANGES.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}
+    <div class="prose"><h3>Qui est dans l'app ?</h3><p>${NC} candidats déclarés, testés dans les sondages ou très médiatisés. Dernier ajout : Teddy Riner, le 9 novembre 2026. Son programme n'étant pas encore publié, il n'est comparé que sur les quelques idées qu'il a déjà exprimées. D'autres personnes ont annoncé leur candidature, dont Jean Lassalle, ${others}. Elles seront ajoutées si leur programme se précise ou si elles obtiennent leurs signatures.</p></div>
     <button class="btn glass" data-go="method">Comment le score est calculé</button>
   `);
 }
